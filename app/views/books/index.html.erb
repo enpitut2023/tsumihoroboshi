@@ -8,3 +8,13 @@
     <%= link_to "詳細", book_path(book.id), method: :get %>
     <% end %>
 <% end %>
+
+<% @tsundoku_all.each do |tsundoku| %>
+    <p><%= tsundoku.book.title %></p>
+    <p><%= tsundoku.reading_status %></p>
+    <% if tsundoku.book.image.attached? %>
+    <%= image_tag tsundoku.book.image %>
+    <%= link_to "編集", edit_tsundoku_path(tsundoku.id) %>
+    <%= link_to "削除", tsundoku_path(tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
+    <% end %>
+<% end %>
