@@ -1,4 +1,7 @@
 <% @book_all.each do |book| %>
     <%= book.title %>
     <%= book.body %>
+    <% if book.image.attached? %>
+    <%= image_tag book.image %>
+    <% end %>
 <% end %>
