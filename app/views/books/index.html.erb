@@ -1,20 +1,54 @@
-<% @book_all.each do |book| %>
-    <p><%= book.title %></p>
-    <%= book.body %>
-    <% if book.image.attached? %>
-    <%= image_tag book.image %>
-    <%= link_to "編集", edit_book_path(book.id) %>
-    <%= link_to "削除", book_path(book.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-    <%= link_to "詳細", book_path(book.id), method: :get %>
-    <% end %>
-<% end %>
+<h2>Books</h2>
+<table class='table table-hover table-inverse'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Opinion</th>
+            <th colspan="3"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @book_all.each do |book| %>
+            <tr>
+                <td>
+                    <% if book.image.attached? %>
+                        <%= image_tag book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
+                    <% end %>
+                </td>
+                <td><%= book.title %></td>
+                <td><%= book.body %></td>
+                <td><%= link_to "編集", edit_book_path(book.id) %></td>
+                <td><%= link_to "削除", book_path(book.id), method: :delete, data: { confirm: '本当に削除しますか？' } %></td>
+                <td><%= link_to "詳細", book_path(book.id), method: :get %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
 
-<% @tsundoku_all.each do |tsundoku| %>
-    <p><%= tsundoku.book.title %></p>
-    <p><%= tsundoku.reading_status %></p>
-    <% if tsundoku.book.image.attached? %>
-    <%= image_tag tsundoku.book.image %>
-    <%= link_to "編集", edit_tsundoku_path(tsundoku.id) %>
-    <%= link_to "削除", tsundoku_path(tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-    <% end %>
-<% end %>
+<h2>Tsundokus</h2>
+<table class='table table-hover table-inverse'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Reading_status</th>
+            <th colspan="3"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @tsundoku_all.each do |tsundoku| %>
+            <tr>
+                <% if tsundoku.book.image.attached? %>
+                    <td>
+                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
+                    </td>
+                <% end %>
+                <td><%= tsundoku.book.title %></td>
+                <td><%= tsundoku.reading_status %></td>
+                <td><%= link_to "編集", edit_tsundoku_path(tsundoku.id) %></td>
+                <td><%= link_to "削除", tsundoku_path(tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %></td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
