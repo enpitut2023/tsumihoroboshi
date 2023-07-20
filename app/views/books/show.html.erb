@@ -1,0 +1,9 @@
+<div class="block">
+<p class="title"><%= @book.title %></p>
+
+<% if @book.image.attached? %>
+<div class="image"><%= image_tag @book.image%></div>
+<% end %>
+
+<p class="body"><%= @book.body %><p>
+</div>
