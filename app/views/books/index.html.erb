@@ -1,7 +1,9 @@
 <% @book_all.each do |book| %>
-    <%= book.title %>
+    <p><%= book.title %></p>
     <%= book.body %>
     <% if book.image.attached? %>
     <%= image_tag book.image %>
+    <%= link_to "編集", edit_book_path(book.id) %>
+    <%= link_to "削除", book_path(book.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
     <% end %>
 <% end %>
