@@ -1,0 +1,17 @@
+<%= form_with model:@tsundoku, local:true do |f| %>
+    <div class="btn-group">
+        <%= f.radio_button :reading_status, 0, checked: true, id: "item-1" %>
+        <label for="item-1">
+        買っただけ
+        </label>
+        <%= f.radio_button :reading_status, 1, id: "item-2" %>
+        <label for="item-2">
+        途中
+        </label>
+        <%= f.radio_button :reading_status, 2, id: "item-3" %>
+        <label for="item-3">
+        読了
+        </label>
+    </div>
+    <%= f.submit "更新", class: "btn btn-primary" %>
+<% end %>
