@@ -5,10 +5,13 @@ class BooksController < ApplicationController
     def create
         @book_new = Book.new(book_params)
         @book_new.save
+
         @tsundoku = Tsundoku.new
-        @tsundoku.reading_status=0
-        @tsundoku.book_id=@book_new.id
+        @tsundoku.reading_status = 0
+        @tsundoku.book_id = @book_new.id
+        @tsundoku.user_id = current_user.id
         @tsundoku.save
+
         redirect_to books_path
     end
     def index

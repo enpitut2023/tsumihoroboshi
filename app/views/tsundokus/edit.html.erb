@@ -1,4 +1,4 @@
-<%= form_with model:@tsundoku, local:true do |f| %>
+<%= form_with model:[@tsundoku.book, @tsundoku], local:true do |f| %>
     <div class="btn-group">
         <%= f.radio_button :reading_status, 0, checked: true, id: "item-1" %>
         <label for="item-1">
