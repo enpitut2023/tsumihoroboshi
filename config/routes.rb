@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :books do
     resources :tsundokus
   end
-  resources :users
+  resources :users do
+    resources :searches
+  end
   
 end
