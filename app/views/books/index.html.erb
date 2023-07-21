@@ -12,8 +12,10 @@
         <% @book_all.each do |book| %>
             <tr>
                 <td>
-                    <% if book.image.attached? %>
-                        <%= image_tag book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
+                    <% if book.image_url.present? %>
+                        <%= image_tag book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% elsif book.image.attached? %>
+                        <%= image_tag book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                     <% end %>
                 </td>
                 <td><%= book.title %></td>
@@ -26,3 +28,46 @@
         <% end %>
     </tbody>
 </table>
+
+<h2>Google Books APIからの検索</h2>
+<div class="search_form">
+    <%= form_with url: books_path, local: true, method: :get do |f| %>
+        <%= f.text_field :q %>
+        <%= f.submit "検索", class: "btn btn-primary" %>
+    <% end %>
+</div>
+
+<% if @book_from_api.present? %>
+<table class='table table-hover table-inverse'>
+    <thead>
+        <tr>
+            <th></th>
+            <th>Title</th>
+            <th>Opinion</th>
+            <th colspan="4"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @book_from_api.each do |book| %>
+            <tr>
+                <td>
+                    <% if book[:image_url].present? %>
+                        <%= image_tag book[:image_url], format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% end %>
+                </td>
+                <td><%= book[:title] %></td>
+                <td><%= book[:body] %></td>
+                <td>
+                <%= form_with model:@book_new, local:true do |f| %>
+                    <%= f.hidden_field :title, value: book[:title] %>
+                    <%= f.hidden_field :body, value: book[:body] %>
+                    <%= f.hidden_field :image_url, value: book[:image_url] %>
+                    <%= f.hidden_field :isbn, value: book[:isbn] %>
+                    <%= f.submit "積み本登録" %>
+                <% end %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
+<% end %>
