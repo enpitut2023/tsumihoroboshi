@@ -1,4 +1,10 @@
-<%= @user.exp %>
+<div class="user-experience">
+  <p>現在の経験値: <%= @user.exp %></p>
+  <p>現在のレベル: <%= @user.current_level %></p>
+  <div class="level-bar">
+    <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
+  </div>
+</div>
 
 <h2>これから読む</h2>
 <table class='table table-hover table-inverse'>

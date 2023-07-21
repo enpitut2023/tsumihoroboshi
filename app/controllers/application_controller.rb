@@ -5,9 +5,9 @@ class ApplicationController < ActionController::Base
     puts resource.last_sign_in_at
     puts '############################'
     puts Date.today
-    if resource.last_sign_in_at == resource.current_sign_in_at or resource.last_sign_in_at < Date.today
-      resource.update(exp: resource.exp + 10)
-    end
+    # if resource.last_sign_in_at == resource.current_sign_in_at or resource.last_sign_in_at < Date.today
+    resource.update(exp: resource.exp + 20)
+    # end
     user_path(resource)
   end
 

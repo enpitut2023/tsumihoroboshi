@@ -17,3 +17,25 @@
  div.profiler-results {
     display: none;
 }
+
+.user-experience {
+    padding: 20px;
+    color: #000000;
+}
+
+.level-bar {
+    height: 20px;
+    width: 200px;
+    /* バーの横幅を指定します */
+    background-color: #e0e0e0;
+    /* グレーのバー */
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.level-progress {
+    height: 100%;
+    background-color: #0000ff;
+    /* 青色のプログレスバー */
+    border-radius: 5px;
+}
