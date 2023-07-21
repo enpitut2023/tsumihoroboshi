@@ -1,10 +1,13 @@
-<h2>ユーザー：<%= @user.name %></h2>
-<h2>EXP: <%= @user.exp %></h2>
-<div class="edit_links">
-    <% if current_user.present? and current_user == @user %>
-        <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
-    <% end %>
+<div class="user-experience">
+  <p>現在の経験値: <%= @user.exp %></p>
+  <p>現在のレベル: <%= @user.current_level %></p>
+  <div class="level-bar">
+    <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
+  </div>
 </div>
+<% if current_user.present? and current_user == @user %>
+    <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
+<% end %>
 
 <br>
 <h2>これから読む</h2>
