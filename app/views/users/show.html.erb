@@ -1,5 +1,12 @@
-<%= @user.exp %>
+<h2>ユーザー：<%= @user.name %></h2>
+<h2>EXP: <%= @user.exp %></h2>
+<div class="edit_links">
+    <% if current_user.exp >= 0 %>
+        <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
+    <% end %>
+</div>
 
+<br>
 <h2>これから読む</h2>
 <table class='table table-hover table-inverse'>
     <thead>
@@ -131,10 +138,4 @@
     <% end %>
 </div>
 
-<div class="edit_links">
-<% if current_user.exp >= 0 %>
-<%= link_to "編集", edit_user_path(current_user.id) %>
-<% end %>
-<%= link_to "削除", user_path(current_user.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-</div>
-<p><%= current_user.exp %></p>
+
