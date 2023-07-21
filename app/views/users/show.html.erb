@@ -1,7 +1,7 @@
 <h2>ユーザー：<%= @user.name %></h2>
 <h2>EXP: <%= @user.exp %></h2>
 <div class="edit_links">
-    <% if current_user.exp >= 0 %>
+    <% if current_user.present? and current_user == @user %>
         <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
     <% end %>
 </div>

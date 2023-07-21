@@ -20,15 +20,18 @@
                 </td>
                 <td><%= book.title %></td>
                 <td><%= book.body %></td>
-                <td><%= link_to "編集", edit_book_path(book.id) %></td>
-                <td><%= link_to "削除", book_path(book.id), method: :delete, data: { confirm: '本当に削除しますか？' } %></td>
+                <!-- <td><%= link_to "編集", edit_book_path(book.id) %></td>
+                <td><%= link_to "削除", book_path(book.id), method: :delete, data: { confirm: '本当に削除しますか？' } %></td> -->
                 <td><%= link_to "詳細", book_path(book.id), method: :get %></td>
-                <td><%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post %></td>
+                <% if current_user.present? %>
+                    <td><%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post %></td>
+                <% end %>
             </tr>
         <% end %>
     </tbody>
 </table>
 
+<p><%= link_to "自分で本を登録", new_book_path %></p>
 <h2>Google Books APIからの検索</h2>
 <div class="search_form">
     <%= form_with url: books_path, local: true, method: :get do |f| %>
@@ -58,13 +61,15 @@
                 <td><%= book[:title] %></td>
                 <td><%= book[:body] %></td>
                 <td>
-                <%= form_with model:@book_new, local:true do |f| %>
-                    <%= f.hidden_field :title, value: book[:title] %>
-                    <%= f.hidden_field :body, value: book[:body] %>
-                    <%= f.hidden_field :image_url, value: book[:image_url] %>
-                    <%= f.hidden_field :isbn, value: book[:isbn] %>
-                    <%= f.submit "積み本登録" %>
-                <% end %>
+                    <% if current_user.present? %>
+                        <%= form_with model:@book_new, local:true do |f| %>
+                            <%= f.hidden_field :title, value: book[:title] %>
+                            <%= f.hidden_field :body, value: book[:body] %>
+                            <%= f.hidden_field :image_url, value: book[:image_url] %>
+                            <%= f.hidden_field :isbn, value: book[:isbn] %>
+                            <%= f.submit "積み本登録" %>
+                        <% end %>
+                    <% end %>
                 </td>
             </tr>
         <% end %>

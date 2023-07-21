@@ -1,4 +1,5 @@
 class TsundokusController < ApplicationController
+    before_action :authenticate_user!, only: [:create, :update, :destroy]
     def create
         @tsundoku = Tsundoku.find_by(book_id:params[:book_id], user_id: current_user.id)
         if @tsundoku.blank?
@@ -19,8 +20,12 @@ class TsundokusController < ApplicationController
 
     def update
         @tsundoku = Tsundoku.find(params[:id])
-        @tsundoku.update(tsundoku_params)
-        redirect_to user_path(current_user.id)
+        if current_user != @tsundoku.user
+            redirect_to user_path(current_user.id)
+        else            
+            @tsundoku.update(tsundoku_params)
+            redirect_to user_path(current_user.id)
+        end
     end
 
     def destroy

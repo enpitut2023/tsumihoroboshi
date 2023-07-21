@@ -12,10 +12,10 @@
         <% @tsundoku_searched.each do |tsundoku| %>
         <tr>
             <td>
-                <% if tsundoku.book.image.attached? %>
-                    <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
-                <% else %>
-                    <%= image_tag "no_image.png", size:"50x50" %>
+                <% if tsundoku.book.image_url.present? %>
+                    <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                <% elsif tsundoku.book.image.attached? %>
+                    <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                 <% end %>
             </td>
             <td>
