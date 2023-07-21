@@ -12,11 +12,13 @@
     <tbody>
         <% @tsundoku_todo.each do |tsundoku| %>
             <tr>
-                <% if tsundoku.book.image.attached? %>
-                    <td>
-                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
-                    </td>
-                <% end %>
+                <td>
+                    <% if tsundoku.book.image_url.present? %>
+                        <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% elsif tsundoku.book.image.attached? %>
+                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% end %>
+                </td>
                 <td><%= tsundoku.book.title %></td>
                 <td>
                     <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
@@ -47,18 +49,19 @@
             <th></th>
             <th>Title</th>
             <th>Reading_status</th>
-            <th>期限</th>
             <th colspan="3"></th>
         </tr>
     </thead>
     <tbody>
         <% @tsundoku_doing.each do |tsundoku| %>
             <tr>
-                <% if tsundoku.book.image.attached? %>
-                    <td>
-                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
-                    </td>
-                <% end %>
+                <td>
+                    <% if tsundoku.book.image_url.present? %>
+                        <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% elsif tsundoku.book.image.attached? %>
+                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% end %>
+                </td>
                 <td><%= tsundoku.book.title %></td>
                 <td>
                     <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
@@ -96,8 +99,10 @@
         <% @tsundoku_done.each do |tsundoku| %>
             <tr>
                 <td>
-                    <% if tsundoku.book.image.attached? %>
-                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
+                    <% if tsundoku.book.image_url.present? %>
+                        <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                    <% elsif tsundoku.book.image.attached? %>
+                        <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                     <% end %>
                 </td>
                 <td><%= tsundoku.book.title %></td>
@@ -111,11 +116,6 @@
                 <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-                    <% end %>
-                </td>
-                <td>
-                    <% if tsundoku.deadline.present? %>
-                        あと<%= (tsundoku.deadline - Time.zone.now).to_i / 1.day %>日
                     <% end %>
                 </td>
             </tr>
