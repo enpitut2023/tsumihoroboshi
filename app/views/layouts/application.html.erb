@@ -14,7 +14,7 @@
   <body>
     <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
-        <li><%= current_user.name %></li>
+        <li><%= link_to current_user.name, user_path(current_user.id) %></li>
         <li><%= link_to " Books", books_path %></li>
         <li><%= link_to " Log out", destroy_user_session_path, method: :delete %></li>
       <% else %>
