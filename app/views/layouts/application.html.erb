@@ -15,6 +15,9 @@
     <ul class="navbar-nav ml-auto">
       <% if user_signed_in? %>
         <li><%= link_to current_user.name, user_path(current_user.id) %></li>
+        <% if current_user.image.attached? %>
+        <%= image_tag current_user.image, format: "jpeg", fallback: "no_image.jpg", size:"50x50" %>
+        <% end %>
         <li><%= link_to " Books", books_path %></li>
         <li><%= link_to " Log out", destroy_user_session_path, method: :delete %></li>
       <% else %>
