@@ -19,11 +19,11 @@
                 <% end %>
             </td>
             <td>
-            <%= tsundoku.book.title %>
+                <%= tsundoku.book.title %>
             </td>
             <td>
             <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
-                <%= f.select :reading_status, options_for_select([['買っただけ', 0], ['読み途中', 1], ['読了', 2]], tsundoku.reading_status), {}, class: "form-control" %>
+                <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
                 <%= f.submit "Update Status", class: "btn btn-success" %>
             <% end %>
             </td>
