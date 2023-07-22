@@ -9,11 +9,28 @@ class User < ApplicationRecord
   has_one :experience
   has_many :tsundokus, dependent: :destroy
 
+  has_many :relationships, class_name: 'Relationship', foreign_key: 'follower_id', dependent: :destroy
+  has_many :reverse_of_relationships, class_name: 'Relationship', foreign_key: 'followed_id', dependent: :destroy
+  has_many :followings, through: :relationships, source: :followed
+  has_many :followers, through: :reverse_of_relationships, source: :follower
+
   def current_level
     exp / Experience::LEVEL_UP_EXPERIENCE
   end
 
   def exp_needed_for_current_level
     current_level * Experience::LEVEL_UP_EXPERIENCE
+  end
+
+  def follow(user_id)
+    relationships.create(followed_id: user_id)
+  end
+
+  def unfollow(user_id)
+    relationships.find_by(followed_id: user_id).destroy
+  end
+
+  def following?(user)
+    followings.include?(user)
   end
 end

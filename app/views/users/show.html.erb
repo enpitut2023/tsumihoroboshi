@@ -5,9 +5,13 @@
     <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
   </div>
 </div>
+<p>フォロー数: <%= @user.followings.count %></p>
+<p>フォロワー数: <%= @user.followers.count %></p>
+
 <% if current_user.present? and current_user == @user %>
     <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
 <% end %>
+
 
 <br>
 <h2>これから読む</h2>
