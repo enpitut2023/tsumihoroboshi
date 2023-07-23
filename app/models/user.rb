@@ -14,6 +14,9 @@ class User < ApplicationRecord
   has_many :followings, through: :relationships, source: :followed
   has_many :followers, through: :reverse_of_relationships, source: :follower
 
+  has_many :likes
+  has_many :books, through: :likes
+
   def current_level
     exp / Experience::LEVEL_UP_EXPERIENCE
   end
@@ -32,5 +35,19 @@ class User < ApplicationRecord
 
   def following?(user)
     followings.include?(user)
+  end
+
+  # お気に入り機能の追加
+  def addlike(book)
+    likes.find_or_create_by(book_id: book.id)
+  end
+
+  def removelike(book)
+    like = likes.find_by(book_id: book.id)
+    like.destroy if like
+  end
+
+  def like?(book)
+    books.include?(book)
   end
 end

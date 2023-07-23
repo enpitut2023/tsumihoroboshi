@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'likes/create'
+  get 'likes/destroy'
   get 'relationships/followings'
   get 'relationships/followers'
   root to: 'homes#top'
@@ -16,4 +18,6 @@ Rails.application.routes.draw do
     get 'followings' => 'relationships#followings', as: 'followings'
     get 'followers' => 'relationships#followers', as: 'followers'
   end
+
+  resources :likes, only: %i[create destroy]
 end
