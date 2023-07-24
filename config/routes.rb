@@ -23,4 +23,9 @@ Rails.application.routes.draw do
   end
 
   resources :likes, only: %i[index create destroy]
+
+  post "/users/:user_id/timers/start", to: 'timers#start'
+  patch "/users/:user_id/timers/:id/stop", to: "timers#stop"
+  delete "/users/:user_id/timers/:id", to: "timers#destroy"
+
 end
