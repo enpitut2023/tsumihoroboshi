@@ -42,15 +42,40 @@ class BooksController < ApplicationController
 
     def index
         @book_all = Book.all
-        if params[:q].present?
-            data = get_json_from_word(params[:q])
+        if params[:q].present? || params[:t].present? || params[:a].present? || params[:i].present?
+            data = get_json_from_word(params[:q],params[:t],params[:a],params[:i])
             @book_from_api = format_books(data)
             @book_new = Book.new
         end
     end
 
-    def get_json_from_word(word)
-        query = URI.encode_www_form(q: word)
+    def get_json_from_word(keyword, title, author, isbn)
+        qword = ""
+        if keyword.present?
+            qword += keyword       
+        end
+        if title.present?
+            if qword.present?
+                qword += "+intitle:" + title          
+            else
+                qword += "intitle:" + title 
+            end
+        end
+        if author.present?
+            if qword.present?
+                qword += "+inauthor:" + author          
+            else
+                qword += "inauthor:" + author 
+            end
+        end
+        if isbn.present?
+            if qword.present?
+                qword += "+isbn:" + isbn.to_s()          
+            else
+                qword += "isbn:" + isbn.to_s()
+            end
+        end
+        query = URI.encode_www_form(q: qword)
         url = "https://www.googleapis.com/books/v1/volumes?" + query
         JSON.parse(Net::HTTP.get(URI.parse(url)))
     end
