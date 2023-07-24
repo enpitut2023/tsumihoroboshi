@@ -1,9 +1,15 @@
-<div class="block">
-<p class="title"><%= @book.title %></p>
+<div class="container mt-4">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h5 class="card-title"><%= @book.title %></h5>
 
-<% if @book.image.attached? %>
-<div class="image"><%= image_tag @book.image%></div>
-<% end %>
+      <% if @book.image.attached? %>
+        <div class="text-center mb-3">
+          <%= image_tag @book.image, class: "img-fluid" %>
+        </div>
+      <% end %>
 
-<p class="body"><%= @book.body %><p>
+      <p class="card-text"><%= @book.body %></p>
+    </div>
+  </div>
 </div>
