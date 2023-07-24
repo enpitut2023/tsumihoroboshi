@@ -10,6 +10,11 @@ class ApplicationController < ActionController::Base
     # if resource.last_sign_in_at == resource.current_sign_in_at or resource.last_sign_in_at < Date.today
     resource.update(exp: resource.exp + @login_exp, book_todo_count: @book_todo_count, book_done_count: @book_done_count)
     # end
+    log=LoginHistory.find_by(login_at: Date.today)
+    if !log
+      log=LoginHistory.new(user_id: current_user.id,login_at: Date.today)
+      log.save
+    end
     user_path(resource)
   end
 
