@@ -172,13 +172,15 @@
 <p><%= @received_dat %></p>
 
 
-
-<%= month_calendar(attribute: :deadline, events: @deadlines) do |date,deadlines| %>
-    <%= date %>
-    <% deadlines.each do |deadline| %>
+<div class="calender">
+<% for deadlines in @list %>
+  <%= month_calendar(attribute: :deadline, events: deadlines[0], start_date: deadlines[1]) do |date,deadlines| %>
+    <%= date.day %>
+      <% deadlines.each do |deadline| %>
         <div>
           <%= deadline.book.title %>
         </div>
       <% end %>
   <% end %>
-  
+<% end %>
+ </div> 
