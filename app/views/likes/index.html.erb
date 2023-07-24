@@ -1,18 +1,19 @@
-<!-- app/views/likes/index.html.erb -->
-<h1>Your Books</h1>
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
-      <th>body</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @likes.each do |like| %>
-      <tr>
-        <td><%= like.book.title %></td>
-        <td><%= like.book.body %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<div class="container mt-5">
+    <h1>Your Books</h1>
+    <table class="table table-bordered table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Body</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @likes.each do |like| %>
+          <tr>
+            <td><%= like.book.title %></td>
+            <td><%= like.book.body %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
