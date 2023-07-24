@@ -1,16 +1,34 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!, only: [:edit, :update]
 
-    
+    def beginning_of_previous_month(num) #今月からnum月前の初日を返す。
+        today=Date.today
+        pMonth=today.month-num
+        pYear=today.year
+        if pMonth < 1
+          pMonth -= 1
+          pYear -= 1
+        end
+        return Date.new(pYear,pMonth,1)
+      end
+
     def show
         @user = User.find(params[:id])
         @tsundoku_todo = @user.tsundokus.where(reading_status: 0)
         @tsundoku_doing = @user.tsundokus.where(reading_status: 1)
         @tsundoku_done = @user.tsundokus.where(reading_status: 2)
-        deadline = params.fetch(:deadline, Date.today).to_date
-        @deadlines = Tsundoku.where(deadline: deadline.beginning_of_month.beginning_of_week..deadline.end_of_month.end_of_week,user_id: @user.id)
-      
+        @list=[[],[],[]]
+        #deadline = params.fetch(:deadline, Date.today).to_date
+        #@deadlines = Tsundoku.where(deadline: deadline.beginning_of_month.beginning_of_week..deadline.end_of_month.end_of_week,user_id: @user.id)
+
+        3.times do |i|
+            deadline = params.fetch(:deadline, beginning_of_previous_month(i)).to_date
+            @deadlines = Tsundoku.where(deadline: deadline.beginning_of_month...deadline.end_of_month,user_id: @user.id)
+            @list[2-i][0]=@deadlines
+            @list[2-i][1]=beginning_of_previous_month(i)
+        end
     end
+
     def edit
         if User.find(params[:id]) != current_user
             redirect_to books_path
