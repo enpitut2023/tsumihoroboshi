@@ -18,11 +18,11 @@ class User < ApplicationRecord
   has_many :books, through: :likes
 
   def current_level
-    exp / Experience::LEVEL_UP_EXPERIENCE
+    exp / Experience::LEVEL_UP_EXPERIENCE + 1
   end
 
   def exp_needed_for_current_level
-    current_level * Experience::LEVEL_UP_EXPERIENCE
+    (current_level - 1) * Experience::LEVEL_UP_EXPERIENCE 
   end
 
   def follow(user_id)
