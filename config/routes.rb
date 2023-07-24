@@ -17,11 +17,12 @@ Rails.application.routes.draw do
     resource :relationships, only: %i[create destroy]
     get 'followings' => 'relationships#followings', as: 'followings'
     get 'followers' => 'relationships#followers', as: 'followers'
+    get 'follows' => 'relationships#follows', as: 'follows'
   end
 
   resources :users do
     member do
-      get :followings, :followers
+      get :followings, :followers, :follows
     end
   end
 
