@@ -5,10 +5,10 @@
     <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
   </div>
 </div>
-<p>フォロー数: <%= @user.followings.count %></p>
-<p><%= link_to "フォロー", followings_user_path(@user) %></p>
-<p>フォロワー数: <%= @user.followers.count %></p>
-<p><%= link_to "フォロワー", followers_user_path(@user) %></p>
+<p>フォロー数: <%= @user.followings.count %>
+フォロワー数: <%= @user.followers.count %></p>
+<p><%= link_to "フォロー一覧", followings_user_path(@user) %>
+<%= link_to "フォロワー一覧", followers_user_path(@user) %></p>
 
 <%= link_to "お気に入り", likes_path() %>
 
@@ -44,6 +44,15 @@
                         <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
                         <%= f.datetime_field :deadline %>
                         <%= f.submit "Update Status", class: "btn btn-success" %>
+                    <% end %>
+                </td>
+                
+                <td>
+                    <% if tsundoku.book.memo.present? %>
+                        <%= tsundoku.book.memo %>
+                        <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% else %>
+                        <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
                     <% end %>
                 </td>
                 <td>
