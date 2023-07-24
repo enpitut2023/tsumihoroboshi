@@ -4,4 +4,8 @@ module UsersHelper
     progress_percentage = (current_level_exp.to_f / Experience::LEVEL_UP_EXPERIENCE) * 100
     [progress_percentage, 100].min # プログレスバーの最大幅は100%に制限します
   end
+
+
+
+  
 end

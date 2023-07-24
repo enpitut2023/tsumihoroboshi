@@ -10,6 +10,8 @@
 <p><%= link_to "フォロー一覧", followings_user_path(@user) %>
 <%= link_to "フォロワー一覧", followers_user_path(@user) %></p>
 
+<p><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></p>
+
 <%= link_to "お気に入り", likes_path() %>
 
 <% if current_user.present? and current_user == @user %>
@@ -48,13 +50,14 @@
                 </td>
                 
                 <td>
-                    <% if tsundoku.book.memo.present? %>
-                        <%= tsundoku.book.memo %>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
                         <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
                     <% else %>
                         <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
                     <% end %>
                 </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
                 <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
@@ -99,6 +102,15 @@
                     <% end %>
                 </td>
                 <td>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
+                        <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% else %>
+                        <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% end %>
+                </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
+                <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                     <% end %>
@@ -142,6 +154,15 @@
                     <% end %>
                 </td>
                 <td>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
+                        <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% else %>
+                        <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% end %>
+                </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
+                <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                     <% end %>
@@ -161,14 +182,22 @@
 
 
 
-<%= month_calendar(attribute: :deadline, events: @deadlines) do |date,deadlines| %>
-    <%= date %>
-    <% deadlines.each do |deadline| %>
+
+
+
+<div class="calender">
+<% for deadlines in @list %>
+  <%= month_calendar(attribute: :deadline, events: deadlines[0], start_date: deadlines[1]) do |date,deadlines| %>
+    <%= date.day %>
+      <% deadlines.each do |deadline| %>
         <div>
             <%= deadline.book.title %>
         </div>
+
     <% end %>
 <% end %>
+<% end %>
+</div>
 
 
 

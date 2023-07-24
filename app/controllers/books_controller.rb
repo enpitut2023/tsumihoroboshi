@@ -50,7 +50,7 @@ class BooksController < ApplicationController
     end
 
     def index
-        @book_all = Book.all
+        @book_all = Book.order(updated_at: :desc).limit(3)
         if params[:q].present? || params[:t].present? || params[:a].present? || params[:i].present?
             data = get_json_from_word(params[:q],params[:t],params[:a],params[:i])
             @book_from_api = format_books(data)
