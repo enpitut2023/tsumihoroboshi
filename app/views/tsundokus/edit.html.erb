@@ -13,5 +13,12 @@
         読了
         </label>
     </div>
+    
+    <div class="field">
+    <%= f.label :memo %>
+    <%= f.text_area :memo %>
+  </div>
+  <div class="actions">
     <%= f.submit "更新", class: "btn btn-primary" %>
+  </div>
 <% end %>

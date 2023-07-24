@@ -15,6 +15,9 @@ class BooksController < ApplicationController
                     @tsundoku.user_id = current_user.id
                     @tsundoku.reading_status = 0
                     @tsundoku.save
+                    if current_user.book_todo_count > 0
+                        current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+                    end
                 end
             else
                 @book_new = Book.new(book_params)
@@ -25,6 +28,9 @@ class BooksController < ApplicationController
                 @tsundoku.book_id = @book_new.id
                 @tsundoku.user_id = current_user.id
                 @tsundoku.save
+                if current_user.book_todo_count > 0
+                    current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+                end
             end
         else
             @book_new = Book.new(book_params)
@@ -35,22 +41,50 @@ class BooksController < ApplicationController
             @tsundoku.book_id = @book_new.id
             @tsundoku.user_id = current_user.id
             @tsundoku.save
+            if current_user.book_todo_count > 0
+                current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+            end
         end
 
-        redirect_to books_path
+        redirect_to user_path(current_user.id)
     end
 
     def index
         @book_all = Book.all
-        if params[:q].present?
-            data = get_json_from_word(params[:q])
+        if params[:q].present? || params[:t].present? || params[:a].present? || params[:i].present?
+            data = get_json_from_word(params[:q],params[:t],params[:a],params[:i])
             @book_from_api = format_books(data)
             @book_new = Book.new
         end
     end
 
-    def get_json_from_word(word)
-        query = URI.encode_www_form(q: word)
+    def get_json_from_word(keyword, title, author, isbn)
+        qword = ""
+        if keyword.present?
+            qword += keyword       
+        end
+        if title.present?
+            if qword.present?
+                qword += "+intitle:" + title          
+            else
+                qword += "intitle:" + title 
+            end
+        end
+        if author.present?
+            if qword.present?
+                qword += "+inauthor:" + author          
+            else
+                qword += "inauthor:" + author 
+            end
+        end
+        if isbn.present?
+            if qword.present?
+                qword += "+isbn:" + isbn.to_s()          
+            else
+                qword += "isbn:" + isbn.to_s()
+            end
+        end
+        query = URI.encode_www_form(q: qword)
         url = "https://www.googleapis.com/books/v1/volumes?" + query
         JSON.parse(Net::HTTP.get(URI.parse(url)))
     end
