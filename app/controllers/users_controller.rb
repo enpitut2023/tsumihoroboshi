@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
     before_action :authenticate_user!, only: [:edit, :update]
+
+    
     def show
         @user = User.find(params[:id])
         @tsundoku_todo = @user.tsundokus.where(reading_status: 0)
