@@ -6,7 +6,11 @@
   </div>
 </div>
 <p>フォロー数: <%= @user.followings.count %></p>
+<p><%= link_to "フォロー", followings_user_path(@user) %></p>
 <p>フォロワー数: <%= @user.followers.count %></p>
+<p><%= link_to "フォロワー", followers_user_path(@user) %></p>
+
+<%= link_to "お気に入り", likes_path() %>
 
 <% if current_user.present? and current_user == @user %>
     <%= link_to "ユーザー編集", edit_user_path(current_user.id) %>
