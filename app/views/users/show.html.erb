@@ -48,13 +48,14 @@
                 </td>
                 
                 <td>
-                    <% if tsundoku.book.memo.present? %>
-                        <%= tsundoku.book.memo %>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
                         <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
                     <% else %>
                         <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
                     <% end %>
                 </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
                 <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
@@ -99,6 +100,15 @@
                     <% end %>
                 </td>
                 <td>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
+                        <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% else %>
+                        <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% end %>
+                </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
+                <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                     <% end %>
@@ -141,6 +151,15 @@
                         <%= f.submit "Update Status", class: "btn btn-success" %>
                     <% end %>
                 </td>
+                <td>
+                    <% if tsundoku.memo.present? %>
+                        <%= tsundoku.memo %>
+                        <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% else %>
+                        <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
+                    <% end %>
+                </td>
+                <td><%= link_to "詳細", book_path(tsundoku.book.id), method: :get %></td>
                 <td>
                     <% if current_user.present? and tsundoku.user == current_user %>
                         <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
