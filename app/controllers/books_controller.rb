@@ -15,6 +15,9 @@ class BooksController < ApplicationController
                     @tsundoku.user_id = current_user.id
                     @tsundoku.reading_status = 0
                     @tsundoku.save
+                    if current_user.book_todo_count > 0
+                        current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+                    end
                 end
             else
                 @book_new = Book.new(book_params)
@@ -25,6 +28,9 @@ class BooksController < ApplicationController
                 @tsundoku.book_id = @book_new.id
                 @tsundoku.user_id = current_user.id
                 @tsundoku.save
+                if current_user.book_todo_count > 0
+                    current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+                end
             end
         else
             @book_new = Book.new(book_params)
@@ -35,9 +41,12 @@ class BooksController < ApplicationController
             @tsundoku.book_id = @book_new.id
             @tsundoku.user_id = current_user.id
             @tsundoku.save
+            if current_user.book_todo_count > 0
+                current_user.update(book_todo_count: current_user.book_todo_count - 1, exp: current_user.exp + @book_todo_exp)
+            end
         end
 
-        redirect_to books_path
+        redirect_to user_path(current_user.id)
     end
 
     def index
