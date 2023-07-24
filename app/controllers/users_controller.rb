@@ -7,6 +7,9 @@ class UsersController < ApplicationController
         @tsundoku_todo = @user.tsundokus.where(reading_status: 0)
         @tsundoku_doing = @user.tsundokus.where(reading_status: 1)
         @tsundoku_done = @user.tsundokus.where(reading_status: 2)
+        deadline = params.fetch(:deadline, Date.today).to_date
+        @deadlines = Tsundoku.where(deadline: deadline.beginning_of_month.beginning_of_week..deadline.end_of_month.end_of_week,user_id: @user.id)
+      
     end
     def edit
         if User.find(params[:id]) != current_user
