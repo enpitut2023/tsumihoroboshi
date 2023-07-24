@@ -16,6 +16,7 @@ class User < ApplicationRecord
 
   has_many :likes
   has_many :books, through: :likes
+  has_many :timers
 
   def current_level
     exp / Experience::LEVEL_UP_EXPERIENCE + 1
