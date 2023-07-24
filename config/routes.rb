@@ -1,11 +1,7 @@
 Rails.application.routes.draw do
-  get 'likes/create'
-  get 'likes/destroy'
-  get '/likes', to: 'likes#index'
-  get 'relationships/followings'
-  get 'relationships/followers'
-  root to: 'homes#top'
   devise_for :users
+  root to: 'homes#top'
+  
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   resources :books do
     resources :tsundokus
@@ -26,5 +22,5 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :likes, only: %i[create destroy]
+  resources :likes, only: %i[index create destroy]
 end
