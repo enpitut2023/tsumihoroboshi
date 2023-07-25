@@ -12,7 +12,7 @@ class TimersController < ApplicationController
         @user = User.find(params[:user_id])
         @timer = Timer.find(params[:id])
         @timer.update(duration: params[:duration] / 1000)
-        @user.update(exp: @user.exp + @timer.duration / 60)
+        @user.update(exp: @user.exp + [@timer.duration / 60, 30].min)
         render json: { message: 'Timer stopped and duration saved.' }
     end
 

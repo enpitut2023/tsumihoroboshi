@@ -19,6 +19,8 @@
                 <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size: "50x75", class: "img-fluid rounded" %>
               <% elsif tsundoku.book.image.attached? %>
                 <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size: "50x75", class: "img-fluid rounded" %>
+              <% else %>
+                <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% end %>
             </td>
             <td><%= tsundoku.book.title %></td>

@@ -125,17 +125,8 @@
                     <!--ここからストップウォッチ-->
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
-                        <h2 class="mt-4">読書タイマー</h2>
-                        <p class="mt-4 lead">開始して読書を初めましょう</p>
-                        <div id="time">00:00:00</div>
-                        <div id="buttons">
-                            <input id="start" type="button" value="タイマー開始">
-                            <input id="pause" type="button" value="一時停止" disabled=true>
-                            <input id="stop" type="button" value="記録" disabled=true>
-                            <input id="reset" type="button" value="リセット" disabled=true>
-                        </div>
                         <h3 class="mt-4">読書タイマー</h3>
-                        <% if current_user.current_level < 10 %>
+                        <% if current_user.current_level < 1 %>
                             <p>レベルが10以上になると使用できます！</p>
                         <% else %>
                             <div id="time">00:00:00</div>
@@ -310,6 +301,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -378,6 +371,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -443,6 +438,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -450,7 +447,6 @@
                                     <td>
                                         <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
                                             <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
                                             <%= f.submit "更新", class: "btn btn-success" %>
                                         <% end %>
                                     </td>
@@ -491,18 +487,4 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

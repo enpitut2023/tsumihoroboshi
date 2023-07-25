@@ -35,6 +35,9 @@ class TsundokusController < ApplicationController
       if @tsundoku.reading_status == 2 and current_user.book_done_count > 0
         current_user.update(book_done_count: current_user.book_done_count - 1,
                             exp: current_user.exp + @book_done_exp)
+        @tsundoku.update(deadline: nil)
+      elsif @tsundoku.reading_status == 2
+        @tsundoku.update(deadline: nil)
       end
       redirect_to user_path(current_user.id)
     end
