@@ -21,12 +21,12 @@
                                 <% end %>
                             <% end %>
                             <div class="mb-3 mt-3">
-                                <% if @user.current_level >= 100 %>
-                                    <%= image_tag "menzai_gold.png", size: "150x40", title:"100レベルを超えた", class: "img-fluid"%>
-                                <% elsif @user.current_level >= 50 %>
-                                    <%= image_tag "menzai_silver.png", size: "150x40", title:"50レベルを超えた", class: "img-fluid"%>
+                                <% if @user.current_level >= 50 %>
+                                    <%= image_tag "menzai_gold.png", size: "150x40", title:"50レベルを超えた", class: "img-fluid"%>
                                 <% elsif @user.current_level >= 30 %>
-                                    <%= image_tag "menzai_bronze.png", size: "150x40", title:"30レベルを超えた", class: "img-fluid"%>
+                                    <%= image_tag "menzai_silver.png", size: "150x40", title:"30レベルを超えた", class: "img-fluid"%>
+                                <% elsif @user.current_level >= 10 %>
+                                    <%= image_tag "menzai_bronze.png", size: "150x40", title:"10レベルを超えた", class: "img-fluid"%>
                                 <% elsif @user.current_level >= 5 %>
                                     <%= image_tag "menzai_normal.png", size: "150x40", title:"5レベルを超えた", class: "img-fluid"%>
                                 <% end %>
@@ -50,6 +50,16 @@
                                         <%= image_tag "resist_bronze.png", size: "40x40", title:"本を10冊登録した", class: "img-fluid"%>
                                     <% elsif @user.tsundokus.length >= 3 %>
                                         <%= image_tag "resist_normal.png", size: "40x40", title:"本を3冊登録した", class: "img-fluid"%>
+                                    <% end %>
+
+                                    <% if @user.followers.count >= 100 %>
+                                        <%= image_tag "follow_gold.png", size: "40x40", title: "100人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 50 %>
+                                        <%= image_tag "follow_silver.png", size: "40x40", title:"50人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 10 %>
+                                        <%= image_tag "follow_bronze.png", size: "40x40", title:"10人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 3 %>
+                                        <%= image_tag "follow_normal.png", size: "40x40", title:"3人にフォローされた", class:"img-fluid" %>
                                     <% end %>
                                 </div>
                             </div>
@@ -99,7 +109,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card mt-3">
+            <div class="card mt-3 mb-5">
                 <div class="card-body">
                     <div class="card-text">フォロー数: <%= @user.followings.count %></div>
                     <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
@@ -116,6 +126,7 @@
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
                         <h2 class="mt-4">読書タイマー</h2>
+                        <p class="mt-4 lead">開始して読書を初めましょう</p>
                         <div id="time">00:00:00</div>
                         <div id="buttons">
                             <input id="start" type="button" value="タイマー開始">
@@ -123,6 +134,18 @@
                             <input id="stop" type="button" value="記録" disabled=true>
                             <input id="reset" type="button" value="リセット" disabled=true>
                         </div>
+                        <h3 class="mt-4">読書タイマー</h3>
+                        <% if current_user.current_level < 10 %>
+                            <p>レベルが10以上になると使用できます！</p>
+                        <% else %>
+                            <div id="time">00:00:00</div>
+                            <div id="buttons">
+                                <input id="start" type="button" value="タイマー開始">
+                                <input id="pause" type="button" value="一時停止" disabled=true>
+                                <input id="stop" type="button" value="記録" disabled=true>
+                                <input id="reset" type="button" value="リセット" disabled=true>
+                            </div>
+                        <% end %>
 
                         <script>
                             document.addEventListener('DOMContentLoaded', () => {
@@ -270,6 +293,9 @@
                     <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg"%>
                 </div>
             <% end %>
+            <p class="text-center lead">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
+            
+            
             <div class="mb-5 border">
                 <h2 class="border-bottom p-3">これから読む</h2>
                 <table class='table table-hover table-inverse'>

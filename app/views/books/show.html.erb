@@ -36,6 +36,7 @@
                     <h1>この本を読んでいるユーザ</h1>
                 </div>
                 <% @tsundokus.each do |tsundoku| %>
+                <%= link_to user_path(tsundoku.user.id), class: "no-link-style" do %>
                 <div class="d-flex flex-row justify-content-between align-items-center">
                     <div class="d-flex flex-row align-items-center">                            
                         <% if tsundoku.user.image.attached? %>
@@ -62,6 +63,7 @@
                       <% end %>
                     </div>
                 </div>
+                <% end %>
                 <% end %>
             </div>
         </div>
