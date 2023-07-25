@@ -1,8 +1,8 @@
   <div class="container mt-5">
-    <h2 class="mb-4">検索結果</h2>
     <div class="table-responsive">
       <table class="table table-hover">
         <% if @range == "Book" %>
+        <h2 class="mb-4">検索結果</h2>
         <thead>
           <tr>
             <th></th>
@@ -19,6 +19,8 @@
                 <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size: "50x75", class: "img-fluid rounded" %>
               <% elsif tsundoku.book.image.attached? %>
                 <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size: "50x75", class: "img-fluid rounded" %>
+              <% else %>
+                <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% end %>
             </td>
             <td><%= tsundoku.book.title %></td>
@@ -31,33 +33,55 @@
           </tr>
           <% end %>
         </tbody>
-        <% else %>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th colspan="3"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @users_searched.each do |user| %>
-          <tr>
-            <td><%= user.name %></td>
-            <td>フォロー数: <%= user.followings.count %></td>
-            <td>フォロワー数: <%= user.followers.count %></td>
-            <td>
-              <% if current_user.following?(user) %>
-                <%= link_to "フォロー外す", user_relationships_path(user.id), method: :delete, class: "btn btn-danger btn-sm" %>
-              <% else %>
-                <%= link_to "フォローする", user_relationships_path(user.id), method: :post, class: "btn btn-primary btn-sm" %>
-              <% end %>
-            </td>
-          </tr>
-          <% end %>
-        </tbody>
-        <% end %>
       </table>
+        <% else %>
+        <div class="container mt-5">
+              <div class="d-flex justify-content-center row">
+                  <div class="col-md-6">
+                      <div class="p-3 bg-white text-center">
+                      <div>
+                          <h1>検索結果</h1>
+                      </div>
+                      <% @users_searched.each do |user| %>
+                      <%= link_to user_path(user.id), class: "no-link-style" do %>
+                      <div class="d-flex flex-row justify-content-between align-items-center">
+                          <div class="d-flex flex-row align-items-center">                            
+                              <% if user.image.attached? %>
+                                  <%= image_tag user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
+                              <% else %>
+                                  <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
+                              <% end %>
+                              <div class="d-flex flex-column align-items-start ml-2">
+                                  <span class="font-weight-bold">
+                                      <%= user.name %>
+                                  </span>
+                                  <span>
+                                  <small class="text-muted">レベル<%= user.current_level %></small>
+                                  </span>
+                              </div>
+                          </div>
+                          <div class="d-flex flex-row align-items-center mt-2">
+                          <% if !(current_user.present? and current_user == user) %>
+                              <% if current_user.following?(user) %>
+                              <%= link_to "フォロー外す", user_relationships_path(user.id), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+                              <% else %>
+                              <%= link_to "フォローする", user_relationships_path(user.id), method: :post, class: "btn btn-outline-primary btn-sm" %>
+                              <% end %>
+                            <% end %>
+                          </div>
+                      </div>
+                      <% end %>
+                      <% end %>
+                  </div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      
     </div>
   </div>
+
+
+
+
+    </div>

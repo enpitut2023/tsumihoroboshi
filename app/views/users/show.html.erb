@@ -21,12 +21,12 @@
                                 <% end %>
                             <% end %>
                             <div class="mb-3 mt-3">
-                                <% if @user.current_level >= 100 %>
-                                    <%= image_tag "menzai_gold.png", size: "150x40", title:"100レベルを超えた", class: "img-fluid"%>
-                                <% elsif @user.current_level >= 50 %>
-                                    <%= image_tag "menzai_silver.png", size: "150x40", title:"50レベルを超えた", class: "img-fluid"%>
+                                <% if @user.current_level >= 50 %>
+                                    <%= image_tag "menzai_gold.png", size: "150x40", title:"50レベルを超えた", class: "img-fluid"%>
                                 <% elsif @user.current_level >= 30 %>
-                                    <%= image_tag "menzai_bronze.png", size: "150x40", title:"30レベルを超えた", class: "img-fluid"%>
+                                    <%= image_tag "menzai_silver.png", size: "150x40", title:"30レベルを超えた", class: "img-fluid"%>
+                                <% elsif @user.current_level >= 10 %>
+                                    <%= image_tag "menzai_bronze.png", size: "150x40", title:"10レベルを超えた", class: "img-fluid"%>
                                 <% elsif @user.current_level >= 5 %>
                                     <%= image_tag "menzai_normal.png", size: "150x40", title:"5レベルを超えた", class: "img-fluid"%>
                                 <% end %>
@@ -51,6 +51,16 @@
                                     <% elsif @user.tsundokus.length >= 3 %>
                                         <%= image_tag "resist_normal.png", size: "40x40", title:"本を3冊登録した", class: "img-fluid"%>
                                     <% end %>
+
+                                    <% if @user.followers.count >= 100 %>
+                                        <%= image_tag "follow_gold.png", size: "40x40", title: "100人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 50 %>
+                                        <%= image_tag "follow_silver.png", size: "40x40", title:"50人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 10 %>
+                                        <%= image_tag "follow_bronze.png", size: "40x40", title:"10人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 3 %>
+                                        <%= image_tag "follow_normal.png", size: "40x40", title:"3人にフォローされた", class:"img-fluid" %>
+                                    <% end %>
                                 </div>
                             </div>
                             <div class="card-text">現在の経験値: <%= @user.exp %></div>
@@ -58,11 +68,48 @@
                             <div class="level-bar mt-2">
                                 <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
                             </div>
+
+                            <label class="open" for="pop-up">レベルを上げるには？</label>
+                            <input type="checkbox" id="pop-up">
+                            <div class="overlay">
+                                <div class="window">
+                                    <label class="close" for="pop-up">×</label>
+                                    <div class="text">
+                                    <h3>アプリを利用して経験値をためよう</h3>
+                                    <p>経験値を100集めるとレベルが1上がる</p>
+                                    <p>レベルを上げることで新しい機能が解放されたり</p>
+                                    <p>特別なバッジが名前の横についたりするかも</p>
+                                    <table>
+                                        <tr>
+                                            <td>expの獲得方法</td>
+                                            <td>獲得ポイント</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ログイン</td>
+                                            <td>30pt(1日1回)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本の登録</td>
+                                            <td>3pt(1日5回)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本を読み終わる</td>
+                                            <td>10pt(1日5回)</td>
+                                        </tr>
+                                        <tr>
+                                        <td>本を読む(読書タイマーはレベル10で解放)</td>
+                                        <td>1pt/1分(1回30ptまで)</td>
+                                        </tr>                           
+                                        <!-- 追加の行をここに追加 -->
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="card mt-3">
+            <div class="card mt-3 mb-5">
                 <div class="card-body">
                     <div class="card-text">フォロー数: <%= @user.followings.count %></div>
                     <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
@@ -78,14 +125,18 @@
                     <!--ここからストップウォッチ-->
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
-                        <h2 class="mt-4">読書タイマー</h2>
-                        <div id="time">00:00:00</div>
-                        <div id="buttons">
-                            <input id="start" type="button" value="タイマー開始">
-                            <input id="pause" type="button" value="一時停止" disabled=true>
-                            <input id="stop" type="button" value="記録" disabled=true>
-                            <input id="reset" type="button" value="リセット" disabled=true>
-                        </div>
+                        <h3 class="mt-4">読書タイマー</h3>
+                        <% if current_user.current_level < 1 %>
+                            <p>レベルが10以上になると使用できます！</p>
+                        <% else %>
+                            <div id="time">00:00:00</div>
+                            <div id="buttons">
+                                <input id="start" type="button" value="タイマー開始">
+                                <input id="pause" type="button" value="一時停止" disabled=true>
+                                <input id="stop" type="button" value="記録" disabled=true>
+                                <input id="reset" type="button" value="リセット" disabled=true>
+                            </div>
+                        <% end %>
 
                         <script>
                             document.addEventListener('DOMContentLoaded', () => {
@@ -233,6 +284,9 @@
                     <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg"%>
                 </div>
             <% end %>
+            <p class="text-center lead">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
+            
+            
             <div class="mb-5 border">
                 <h2 class="border-bottom p-3">これから読む</h2>
                 <table class='table table-hover table-inverse'>
@@ -247,6 +301,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -315,6 +371,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -380,6 +438,8 @@
                                         <%= image_tag tsundoku.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% elsif tsundoku.book.image.attached? %>
                                         <%= image_tag tsundoku.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+                                    <% else %>
+                                        <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
                                     <% end %>
                                 </td>
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
@@ -387,7 +447,6 @@
                                     <td>
                                         <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
                                             <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
                                             <%= f.submit "更新", class: "btn btn-success" %>
                                         <% end %>
                                     </td>
@@ -428,18 +487,4 @@
         </div>
     </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 

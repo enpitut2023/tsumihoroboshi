@@ -8,7 +8,11 @@
         </div>
       <% elsif @book.image.attached? %>
         <div class="text-center mb-3">
-          <%= image_tag @book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+          <%= image_tag @book.image, format: "jpeg", fallback: "no_image.jpg", size:"120x180" %>
+        </div>
+      <% else %>
+        <div class="text-center mb-3">
+          <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"120x180" %>
         </div>
       <% end %>
 
@@ -24,56 +28,48 @@
   </div>
 </div>
 
-<p class="card-text text-center mt-4">この本を読んでいるユーザ</p>
+
 <!-- tsundokusのuser_idカラムとusersのuser_idが等しいuserを全て表示する -->
-<div class="container mt-4">
-  <div class="card shadow-s">
-  <% @tsundokus.each do |tsundoku| %>
-    <div class="row">
 
-      <div class="col-4">
-      <% if tsundoku.user.image.attached? %>
-      <%= image_tag tsundoku.user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image ", size: "100x100" %>
-      <% end %>
-      </div>
-      <div class="col-4">
-      <%= link_to tsundoku.user.name, user_path(tsundoku.user.id)%>
-      </div>
-      <div class="col-4">
-        レベル<%= tsundoku.user.current_level %>
-      </div>
 
+ <div class="container mt-5">
+        <div class="d-flex justify-content-center row">
+            <div class="col-md-6">
+                <div class="p-3 bg-white text-center">
+                <div>
+                    <h1>この本を読んでいるユーザ</h1>
+                </div>
+                <% @tsundokus.each do |tsundoku| %>
+                <%= link_to user_path(tsundoku.user.id), class: "no-link-style" do %>
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <div class="d-flex flex-row align-items-center">                            
+                        <% if tsundoku.user.image.attached? %>
+                            <%= image_tag tsundoku.user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
+                        <% else %>
+                            <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
+                        <% end %>
+                        <div class="d-flex flex-column align-items-start ml-2">
+                            <span class="font-weight-bold">
+                                <%= tsundoku.user.name %>
+                            </span>
+                            <span>
+                            <small class="text-muted">レベル<%= tsundoku.user.current_level %></small>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-row align-items-center mt-2">
+                    <% if !(current_user.present? and current_user == tsundoku.user) %>
+                        <% if current_user.following?(tsundoku.user) %>
+                        <%= link_to "フォロー外す", user_relationships_path(tsundoku.user.id), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+                        <% else %>
+                        <%= link_to "フォローする", user_relationships_path(tsundoku.user.id), method: :post, class: "btn btn-outline-primary btn-sm" %>
+                        <% end %>
+                      <% end %>
+                    </div>
+                </div>
+                <% end %>
+                <% end %>
+            </div>
+        </div>
+      </div>
     </div>
-    <% end %>
-  </div>
-</div>
-
-
-<!--
-<div class="container d-flex justify-content-center">
-<% @tsundokus.each do |tsundoku| %>
-	<div class="card p-3">
-		<div class="media">
-    <% if tsundoku.user.image.attached? %>
-    <%= image_tag tsundoku.user.image, format: "jpeg", fallback: "no_image.jpg", class: "mr-3" %>
-    <% end %>
-  			<div class="media-body">
-  				<h5 class="mt-2 mb-0"><%= tsundoku.user.name %></h5>
- 				<div class="d-flex flex-row justify-content-between align-text-center">
-  					<small class="text-muted">レベル<%= tsundoku.user.current_level %></small>
-  					<button class="btn btn-primary mr-2">
-            <% if !(current_user.present? and current_user == tsundoku.user) %>
-            <% if current_user.following?(tsundoku.user) %>
-                <%= link_to "フォロー", user_relationships_path(tsundoku.user.id), method: :delete %>
-            <% else %>
-                <%= link_to "フォロー外す", user_relationships_path(tsundoku.user.id), method: :post %>
-            <% end %>
-        <% end %>
-            </button>
-  				</div>
-  			</div>
-		</div>
-	</div>
-  <% end %>>
-</div>
- -->

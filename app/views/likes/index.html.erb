@@ -18,13 +18,15 @@
                 <%= image_tag like.book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% elsif like.book.image.attached? %>
                 <%= image_tag like.book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+              <% else %>
+                <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% end %>
             </td>
-            <td><%= like.book.title %></td>
+            <td><%= link_to like.book.title, book_path(like.book.id) %></td>
             <td><%= like.book.body %></td>
             <!-- Add the links or buttons here -->
             <!-- Example for "詳細" link -->
-            <td><%= link_to "詳細", book_path(like.book.id), method: :get, class: "btn btn-secondary" %>
+            <td>
            <% if false %><% if current_user.present? %>
               <%= link_to "積み本登録", book_tsundokus_path(like.book.id), method: :post, class: "btn btn-primary mt-2" %>
             <% end %> <% end %>
