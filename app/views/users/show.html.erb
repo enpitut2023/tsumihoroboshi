@@ -11,6 +11,37 @@
                             <div class="card-text mt-4">ユーザー名: <%= @user.name %></div>
                             <% if current_user.present? and current_user == @user %>
                                 <div class="card-text"><%= link_to "ユーザー編集", edit_user_path(current_user.id) %></div>
+                                <div>
+                                <% if current_user.current_level >= 100 %>
+                                <%= image_tag "menzai_gold.png", size: "100x40", title:"100レベルを超えた"%>
+                                <% elsif current_user.current_level >= 50 %>
+                                <%= image_tag "menzai_silver.png", size: "100x40", title:"50レベルを超えた"%>
+                                <% elsif current_user.current_level >= 30 %>
+                                <%= image_tag "menzai_bronze.png", size: "100x40", title:"30レベルを超えた"%>
+                                <% elsif current_user.current_level >= 10 %>
+                                <%= image_tag "menzai_normal.png", size: "100x40", title:"10レベルを超えた"%>
+                                <% end %>
+
+                                <% if @tsundoku_done.length >= 100 %>
+                                <%= image_tag "book_gold.png", size: "40x40", title:"本を100冊読了した"%>
+                                <% elsif @tsundoku_done.length >= 50 %>
+                                <%= image_tag "book_silver.png", size: "40x40", title:"本を50冊読了した"%>
+                                <% elsif @tsundoku_done.length >= 10 %>
+                                <%= image_tag "book_bronze.png", size: "40x40", title:"本を10冊読了した"%>
+                                <% elsif @tsundoku_done.length >= 5 %>
+                                <%= image_tag "book_normal.png", size: "40x40", title:"本を5冊読了した"%>
+                                <% end %>
+
+                                <% if @user.tsundokus.length >= 100 %>
+                                <%= image_tag "resist_gold.png", size: "40x40", title:"本を100冊登録した"%>
+                                <% elsif @user.tsundokus.length >= 50 %>
+                                <%= image_tag "resist_silver.png", size: "40x40", title:"本を50冊登録した"%>
+                                <% elsif @user.tsundokus.length >= 10 %>
+                                <%= image_tag "resist_bronze.png", size: "40x40", title:"本を10冊登録した"%>
+                                <% elsif @user.tsundokus.length >= 5 %>
+                                <%= image_tag "resist_normal.png", size: "40x40", title:"本を5冊登録した"%>
+                                <% end %>
+                                </div>
                             <% else %>
                                 <% if current_user.following?(@user) %>
                                     <%= link_to "フォロー外す", user_relationships_path(@user.id), method: :delete %>
