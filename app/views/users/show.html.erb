@@ -54,11 +54,11 @@
 
                                     <% if @user.followers.count >= 100 %>
                                         <%= image_tag "follow_gold.png", size: "40x40", title: "100人にフォローされた", class:"img-fluid" %>
-                                    <% elseif @user.followers.count >= 50 %>
+                                    <% elsif @user.followers.count >= 50 %>
                                         <%= image_tag "follow_silver.png", size: "40x40", title:"50人にフォローされた", class:"img-fluid" %>
-                                    <% elseif @user.followers.count >= 10 %>
+                                    <% elsif @user.followers.count >= 10 %>
                                         <%= image_tag "follow_bronze.png", size: "40x40", title:"10人にフォローされた", class:"img-fluid" %>
-                                    <% elseif @user.followers.count >= 3 %>
+                                    <% elsif @user.followers.count >= 3 %>
                                         <%= image_tag "follow_normal.png", size: "40x40", title:"3人にフォローされた", class:"img-fluid" %>
                                     <% end %>
                                 </div>
@@ -126,7 +126,7 @@
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
                         <h3 class="mt-4">読書タイマー</h3>
-                        <% if current_user.current_level < 1 %>
+                        <% if current_user.current_level < 10 %>
                             <p>レベルが10以上になると使用できます！</p>
                         <% else %>
                             <div id="time">00:00:00</div>
