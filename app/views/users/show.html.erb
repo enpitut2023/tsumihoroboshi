@@ -11,10 +11,10 @@
                                 <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image img-fluid", style: "width: 150px; height: auto;" %>
                             <% end %>
                             <% if current_user.present? and current_user == @user %>
-                                <%= link_to edit_user_path(current_user.id) do %>
-                                    <div class="d-flex justify-content-center">
-                                        <div class="border border-dark rounded w-75">
-                                            <%=  image_tag("gear.jpg", size: "30x30") %>
+                                <%= link_to edit_user_path(current_user.id), class: "text-decoration-none" do %>
+                                    <div class="d-flex flex-column align-items-center">
+                                        <div class="border border-dark rounded w-75 mt-2">
+                                            <span class="ml-2 pt-2">ユーザー編集</span> <%= image_tag("gear.jpg", size: "30x30") %>
                                         </div>
                                     </div>
                                 <% end %>

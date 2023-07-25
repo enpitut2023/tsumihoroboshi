@@ -42,6 +42,10 @@
               <li class="nav-item" style="margin-left: 10px">
                   <%= image_tag current_user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
               </li>
+            <% else %>
+              <li class="nav-item" style="margin-left: 10px">
+                  <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
+              </li>
             <% end %>
           <% else %>
             <li class="nav-item ">
