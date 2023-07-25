@@ -58,6 +58,43 @@
                             <div class="level-bar mt-2">
                                 <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
                             </div>
+
+                            <label class="open" for="pop-up">レベルを上げるには？</label>
+                            <input type="checkbox" id="pop-up">
+                            <div class="overlay">
+                                <div class="window">
+                                    <label class="close" for="pop-up">×</label>
+                                    <div class="text">
+                                    <h3>アプリを利用して経験値をためよう</h3>
+                                    <p>経験値を100集めるとレベルが1上がる</p>
+                                    <p>レベルを上げることで新しい機能が解放されたり</p>
+                                    <p>特別なバッジが名前の横についたりするかも</p>
+                                    <table>
+                                        <tr>
+                                            <td>expの獲得方法</td>
+                                            <td>獲得ポイント</td>
+                                        </tr>
+                                        <tr>
+                                            <td>ログイン</td>
+                                            <td>30pt(1日1回)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本の登録</td>
+                                            <td>3pt(1日5回)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>本を読み終わる</td>
+                                            <td>10pt(1日5回)</td>
+                                        </tr>
+                                        <tr>
+                                        <td>本を読む(読書タイマーはレベル10で解放)</td>
+                                        <td>1pt/1分(1日 n ptまで)</td>
+                                        </tr>                           
+                                        <!-- 追加の行をここに追加 -->
+                                    </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
