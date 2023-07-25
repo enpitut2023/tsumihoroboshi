@@ -61,9 +61,9 @@ class UsersController < ApplicationController
     def user_params
         user = User.find(params[:id])
         if user.current_level < 5
-            params.require(:user).permit(:name, :email)
+            params.require(:user).permit(:name, :email, :exp)
         else
-            params.require(:user).permit(:name, :email, :image)
+            params.require(:user).permit(:name, :email, :image, :exp)
         end
     end
 end
