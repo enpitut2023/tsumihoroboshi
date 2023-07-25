@@ -33,30 +33,39 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <% if user_signed_in? %>
-            <li class="nav-item" style="margin-left: 10px">
-                <%= link_to "My Page", user_path(current_user.id), class: "nav-link btn btn-warning text-white px-2" %>
+            <% if @user.present? %>
+                    <li class="nav-item search_form mt-1" style="margin-left: 10px">
+                      <%= form_with url: user_searches_path(user_id: @user.id), local: true, method: :get, html: { class: "d-flex" } do |f| %>
+                          <%= f.text_field :word, placeholder: "ユーザー内検索",  class: "form-control px-4 mt-2" %>
+                          <%= f.select :range, options_for_select([['User'], ['Book']]), {}, class: 'form-control mt-2', style: 'width: 70px;' %>
+                          <%= f.submit "検索", class: " btn btn-primary mt-2" %>
+                      <% end %>
+                    </li>
+                <% end %>
+            <li class="nav-item  mt-1" style="margin-left: 10px">
+                <%= link_to "My Page", user_path(current_user.id), class: "nav-link btn btn-warning text-white px-2 mt-1" %>
             </li>
-            <li class="nav-item" style="margin-left: 10px">
-              <%= link_to "Bookmarks", likes_path, class: "nav-link btn btn-warning text-white px-2" %>
+            <li class="nav-item mt-1" style="margin-left: 10px">
+              <%= link_to "Bookmarks", likes_path, class: "nav-link btn btn-warning text-white px-2 mt-1" %>
             </li>
-            <li class="nav-item" style="margin-left: 10px">
-              <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "nav-link btn btn-warning text-white px-2" %>
+            <li class="nav-item mt-1" style="margin-left: 10px">
+              <%= link_to "Log out", destroy_user_session_path, method: :delete, class: "nav-link btn btn-warning text-white px-2 mt-1" %>
             </li>
             <% if current_user.image.attached? %>
-              <li class="nav-item d-none d-lg-inline" style="margin-left: 10px">
+              <li class="nav-item d-none d-lg-inline mt-1" style="margin-left: 10px">
                 <%= image_tag current_user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
               </li>
             <% else %>
-              <li class="nav-item d-none d-lg-inline" style="margin-left: 10px">
+              <li class="nav-item d-none d-lg-inline mt-1" style="margin-left: 10px">
                 <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50" %>
               </li>
             <% end %>
           <% else %>
-            <li class="nav-item" style="margin-left: 10px">
-              <%= link_to "Log in", new_user_session_path, class: "nav-link btn btn-warning text-white px-4" %>
+            <li class="nav-item mt-1" style="margin-left: 10px">
+              <%= link_to "Log in", new_user_session_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
             </li>
-            <li class="nav-item;"  style="margin-left: 10px">
-              <%= link_to "Sign up", new_user_registration_path, class: "nav-link btn btn-warning text-white px-4" %>
+            <li class="nav-item mt-1"  style="margin-left: 10px">
+              <%= link_to "Sign up", new_user_registration_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
             </li>
           <% end %>
         </ul>

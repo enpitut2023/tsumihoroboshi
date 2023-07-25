@@ -76,7 +76,7 @@
                                 <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
                             </div>
 
-                            <label class="open" for="pop-up">レベルを上げるには？</label>
+                            <label class="open mt-2" for="pop-up">レベルを上げるには？</label>
                             <input type="checkbox" id="pop-up">
                             <div class="overlay">
                                 <div class="window">
@@ -122,19 +122,12 @@
                     <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
                     <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
                     <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
-                    <div class="search_form mt-4">
-                        <%= form_with url: user_searches_path(user_id: @user.id), local: true, method: :get do |f| %>
-                            <%= f.text_field :word, placeholder: "ユーザー内検索", class: "form-control" %>
-                            <%= f.select :range, options_for_select([['User'], ['Book']]) %>
-                            <%= f.submit "検索", class: "btn btn-primary" %>
-                        <% end %>
-                    </div>
                     <!--ここからストップウォッチ-->
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
                         <h3 class="mt-4">読書タイマー</h3>
                         <% if current_user.current_level < 10 %>
-                            <p>レベルが10以上になると使用できます！</p>
+                            <p>レベルが10以上になると使用できます!</p>
                         <% else %>
                             <div id="time">00:00:00</div>
                             <div id="buttons">
@@ -209,7 +202,7 @@
                                     pauseButton.disabled = false;
                                     stopButton.disabled = false;
                                     resetButton.disabled = false;
-                                    pauseButton.value = "　再開　";
+                                    pauseButton.value = "再開";
                                     clearTimeout(timeoutID);
                                     stopTime += (Date.now() - startTime);
                                 }else {
@@ -317,24 +310,21 @@
                                     <td>
                                         <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
                                             <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                            <%= f.datetime_field :deadline, class: "form-control mt-2" %>
+                                            <%= f.submit "更新", class: "btn btn-success mt-2" %>
+                                            <% if tsundoku.memo.present? %>
+                                                <%= link_to "メモ編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% else %>
+                                                <%= link_to "メモ追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% end %>
+                                            <% if current_user.present? and tsundoku.user == current_user %>
+                                                <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                            <% end %>
+                                            </td>
+                                            <% if tsundoku.memo.present? %>
+                                                <td><%= tsundoku.memo %></td>
+                                            <% end %>
                                         <% end %>
-                                    </td>
-                                    
-                                    <td>
-                                        <% if tsundoku.memo.present? %>
-                                            <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-                                        <% end %>
-                                    </td>
                                     <td>
                                         <% if tsundoku.deadline.present? %>
                                             <% if (tsundoku.deadline - Time.zone.now).to_i / 1.day <= 0 %>
@@ -387,23 +377,21 @@
                                     <td>
                                         <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
                                             <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                            <%= f.datetime_field :deadline, class: "form-control mt-2" %>
+                                            <%= f.submit "更新", class: "btn btn-success mt-2" %>
+                                            <% if tsundoku.memo.present? %>
+                                                <%= link_to "メモ編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% else %>
+                                                <%= link_to "メモ追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% end %>
+                                            <% if current_user.present? and tsundoku.user == current_user %>
+                                                <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                            <% end %>
+                                            </td>
+                                            <% if tsundoku.memo.present? %>
+                                                <td><%= tsundoku.memo %></td>
+                                            <% end %>
                                         <% end %>
-                                    </td>
-                                    <td>
-                                        <% if tsundoku.memo.present? %>
-                                            <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-                                        <% end %>
-                                    </td>
                                     <td>
                                         <% if tsundoku.deadline.present? %>
                                             <% if (tsundoku.deadline - Time.zone.now).to_i / 1.day <= 0 %>
@@ -453,23 +441,21 @@
                                 <% if user_signed_in? and current_user.id == @user.id %>
                                     <td>
                                         <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
-                                            <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                            <%= f.select :reading_status, options_for_select([['もう一度読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
+                                            <%= f.submit "更新", class: "btn btn-success mt-2" %>
+                                            <% if tsundoku.memo.present? %>
+                                                <%= link_to "メモ編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% else %>
+                                                <%= link_to "メモ追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                            <% end %>
+                                            <% if current_user.present? and tsundoku.user == current_user %>
+                                                <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                            <% end %>
+                                            </td>
+                                            <% if tsundoku.memo.present? %>
+                                                <td><%= tsundoku.memo %></td>
+                                            <% end %>
                                         <% end %>
-                                    </td>
-                                    <td>
-                                        <% if tsundoku.memo.present? %>
-                                            <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
-                                        <% end %>
-                                    </td>
                                 <% else %>
                                     <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
                                 <% end %>

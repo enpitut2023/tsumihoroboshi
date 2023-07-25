@@ -24,12 +24,16 @@
               <% end %>
             </td>
             <td><%= tsundoku.book.title %></td>
+            <% if user_signed_in? and current_user == @user %>
             <td>
               <%= form_with model: [tsundoku.book, tsundoku], local: true do |f| %>
                 <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                <%= f.submit "Update Status", class: "btn btn-success mt-2" %>
+                <%= f.submit "更新", class: "btn btn-success mt-2" %>
               <% end %>
             </td>
+            <% else %>
+              <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
+            <% end %>
           </tr>
           <% end %>
         </tbody>
