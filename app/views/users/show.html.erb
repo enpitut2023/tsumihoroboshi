@@ -51,6 +51,16 @@
                                     <% elsif @user.tsundokus.length >= 3 %>
                                         <%= image_tag "resist_normal.png", size: "40x40", title:"本を3冊登録した", class: "img-fluid"%>
                                     <% end %>
+
+                                    <% if @user.followers.count >= 100 %>
+                                        <%= image_tag "follow_gold.png", size: "40x40", title: "100人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 50 %>
+                                        <%= image_tag "follow_silver.png", size: "40x40", title:"50人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 10 %>
+                                        <%= image_tag "follow_bronze.png", size: "40x40", title:"10人にフォローされた", class:"img-fluid" %>
+                                    <% elseif @user.followers.count >= 3 %>
+                                        <%= image_tag "follow_normal.png", size: "40x40", title:"3人にフォローされた", class:"img-fluid" %>
+                                    <% end %>
                                 </div>
                             </div>
                             <div class="card-text">現在の経験値: <%= @user.exp %></div>
