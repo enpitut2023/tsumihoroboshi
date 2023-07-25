@@ -1,11 +1,11 @@
   <div class="container mt-5">
-    <h2>Books</h2>
+    <h2>最近人気な本</h2>
     <table class="table table-hover table-inverse">
       <thead>
         <tr>
           <th></th>
           <th>Title</th>
-          <th>Opinion</th>
+          <th>Outline</th>
           <th colspan="4"></th>
         </tr>
       </thead>
@@ -23,23 +23,21 @@
             <td><%= book.body %></td>
             <!-- Add the links or buttons here -->
             <!-- Example for "詳細" link -->
-            <td><%= link_to "詳細", book_path(book.id), method: :get, class: "btn btn-secondary" %></td>
+            <td><%= link_to "詳細", book_path(book.id), method: :get, class: "btn btn-secondary" %>
             <% if current_user.present? %>
-              <td><%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary" %></td>
+              <%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary mt-2" %>
             <% end %>
             <% if current_user.present? %>
               <% if current_user.like?(book) %>
-                <td>
                   <%= form_with(model: current_user.likes.find_by(book_id: book.id), local: true, method: :delete) do |f| %>
                     <%= hidden_field_tag :book_id, book.id %>
-                    <%= f.submit '登録解除', class: 'btn btn-danger' %>
+                    <%= f.submit '登録解除', class: 'btn btn-danger mt-2' %>
                   <% end %>
                 </td>
               <% else %>
-                <td>
                   <%= form_with(model: current_user.likes.build, local: true) do |f| %>
                     <%= hidden_field_tag :book_id, book.id %>
-                    <%= f.submit 'お気に入り登録', class: 'btn btn-primary' %>
+                    <%= f.submit 'お気に入り登録', class: 'btn btn-primary mt-2' %>
                   <% end %>
                 </td>
               <% end %>
@@ -49,17 +47,15 @@
       </tbody>
     </table>
 
-    <p><%= link_to "自分で本を登録", new_book_path, class: "btn btn-secondary" %></p>
-
     <h2>Google Books APIからの検索</h2>
-    <div class="search_form">
+    <div class="search_form mt-4">
       <%= form_with url: books_path, local: true, method: :get do |f| %>
         <ul style="list-style: none;">
           <li>keyword<%= f.text_field :q, class: "form-control" %></li>
           <li>title<%= f.text_field :t, class: "form-control" %></li>
           <li>author<%= f.text_field :a, class: "form-control" %></li>
           <li>ISBN<%= f.text_field :i, class: "form-control" %></li>
-          <li><%= f.submit "検索", class: "btn btn-primary" %></li>
+          <li><%= f.submit "検索", class: "btn btn-primary mt-4" %></li>
         </ul>
       <% end %>
     </div>
@@ -91,7 +87,7 @@
                     <%= f.hidden_field :body, value: book[:body] %>
                     <%= f.hidden_field :image_url, value: book[:image_url] %>
                     <%= f.hidden_field :isbn, value: book[:isbn] %>
-                    <%= f.submit "積み本登録", class: "btn btn-primary" %>
+                    <%= f.submit "積み本登録", class: "btn btn-primary " %>
                   <% end %>
                 <% end %>
               </td>
@@ -101,4 +97,5 @@
       </table>
     <% end %>
 
-  </div>
+  <p><%= link_to "自分で本を登録", new_book_path, class: "btn btn-secondary" %></p>
+</div>

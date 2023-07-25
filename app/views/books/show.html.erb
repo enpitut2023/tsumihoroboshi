@@ -1,15 +1,43 @@
 <div class="container mt-4">
   <div class="card shadow-sm">
     <div class="card-body">
-      <h5 class="card-title"><%= @book.title %></h5>
 
-      <% if @book.image.attached? %>
+      <% if @book.image_url.present? %>
         <div class="text-center mb-3">
-          <%= image_tag @book.image, class: "img-fluid" %>
+          <%= image_tag @book.image_url, class: "img-fluid" %>
+        </div>
+      <% elsif @book.image.attached? %>
+        <div class="text-center mb-3">
+          <%= image_tag @book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
         </div>
       <% end %>
 
-      <p class="card-text"><%= @book.body %></p>
+      <h5 class="card-title text-center"><%= @book.title %></h5>
+      <p class="card-text text-center"><%= @book.body %></p>
+
+      <% if current_user.present? %>
+        <div class="text-center mb-3">
+          <%= link_to "積み本登録", book_tsundokus_path(@book.id), method: :post, class: "btn btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+
+<p class="card-text text-center mt-4">この本を読んでいるユーザ</p>
+<!-- tsundokusのuser_idカラムとusersのuser_idが等しいuserを全て表示する -->
+<div class="container mt-4">
+  <div class="card shadow-s">
+    <div class="row">
+      <div class="col-4">
+        ユーザの画像
+      </div>
+      <div class="col-4">
+        ユーザの名前
+      </div>
+      <div class="col-4">
+        ユーザのレベル
+      </div>
     </div>
   </div>
 </div>
