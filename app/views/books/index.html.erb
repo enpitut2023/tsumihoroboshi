@@ -1,105 +1,105 @@
-  <div class="container mt-5">
-    <h2>最近人気な本</h2>
+<div class="container mt-5">
+  <h2>Google Books APIからの検索</h2>
+  <div class="search_form mt-4">
+    <%= form_with url: books_path, local: true, method: :get do |f| %>
+      <ul style="list-style: none;">
+        <li>keyword<%= f.text_field :q, class: "form-control" %></li>
+        <li>title<%= f.text_field :t, class: "form-control" %></li>
+        <li>author<%= f.text_field :a, class: "form-control" %></li>
+        <li>ISBN<%= f.text_field :i, class: "form-control" %></li>
+        <li><%= f.submit "検索", class: "btn btn-primary mt-4" %></li>
+      </ul>
+    <% end %>
+  </div>
+
+  <% if @book_from_api.present? %>
     <table class="table table-hover table-inverse">
       <thead>
         <tr>
           <th></th>
           <th>Title</th>
-          <th>Outline</th>
+          <th>Opinion</th>
           <th colspan="4"></th>
         </tr>
       </thead>
       <tbody>
-        <% @book_all.each do |book| %>
+        <% @book_from_api.each do |book| %>
           <tr>
             <td>
-              <% if book.image_url.present? %>
-                <%= image_tag book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
-              <% elsif book.image.attached? %>
-                <%= image_tag book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+              <% if book[:image_url].present? %>
+                <%= image_tag book[:image_url], format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% else %>
                 <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
               <% end %>
             </td>
-            <td><%= link_to book.title, book_path(book.id) %></td>
-            <td><%= book.body %></td>
-            <!-- Add the links or buttons here -->
-            <!-- Example for "詳細" link -->
+            <td><%= book[:title] %></td>
+            <td><%= book[:body] %></td>
             <td>
-            <% if current_user.present? %>
-              <%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary mt-2" %>
-            <% end %>
-            <% if current_user.present? %>
-              <% if current_user.like?(book) %>
-                  <%= form_with(model: current_user.likes.find_by(book_id: book.id), local: true, method: :delete) do |f| %>
-                    <%= hidden_field_tag :book_id, book.id %>
-                    <%= f.submit '登録解除', class: 'btn btn-danger mt-2' %>
-                  <% end %>
-                </td>
-              <% else %>
-                  <%= form_with(model: current_user.likes.build, local: true) do |f| %>
-                    <%= hidden_field_tag :book_id, book.id %>
-                    <%= f.submit 'お気に入り登録', class: 'btn btn-primary mt-2' %>
-                  <% end %>
-                </td>
+              <% if current_user.present? %>
+                <%= form_with model:@book_new, local:true do |f| %>
+                  <%= f.hidden_field :title, value: book[:title] %>
+                  <%= f.hidden_field :body, value: book[:body] %>
+                  <%= f.hidden_field :image_url, value: book[:image_url] %>
+                  <%= f.hidden_field :isbn, value: book[:isbn] %>
+                  <%= f.submit "積み本登録", class: "btn btn-primary " %>
+                <% end %>
               <% end %>
-            <% end %>
+            </td>
           </tr>
         <% end %>
       </tbody>
     </table>
-
-    <h2>Google Books APIからの検索</h2>
-    <div class="search_form mt-4">
-      <%= form_with url: books_path, local: true, method: :get do |f| %>
-        <ul style="list-style: none;">
-          <li>keyword<%= f.text_field :q, class: "form-control" %></li>
-          <li>title<%= f.text_field :t, class: "form-control" %></li>
-          <li>author<%= f.text_field :a, class: "form-control" %></li>
-          <li>ISBN<%= f.text_field :i, class: "form-control" %></li>
-          <li><%= f.submit "検索", class: "btn btn-primary mt-4" %></li>
-        </ul>
-      <% end %>
-    </div>
-
-    <% if @book_from_api.present? %>
-      <table class="table table-hover table-inverse">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Title</th>
-            <th>Opinion</th>
-            <th colspan="4"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @book_from_api.each do |book| %>
-            <tr>
-              <td>
-                <% if book[:image_url].present? %>
-                  <%= image_tag book[:image_url], format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
-                <% else %>
-                  <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
-                <% end %>
-              </td>
-              <td><%= book[:title] %></td>
-              <td><%= book[:body] %></td>
-              <td>
-                <% if current_user.present? %>
-                  <%= form_with model:@book_new, local:true do |f| %>
-                    <%= f.hidden_field :title, value: book[:title] %>
-                    <%= f.hidden_field :body, value: book[:body] %>
-                    <%= f.hidden_field :image_url, value: book[:image_url] %>
-                    <%= f.hidden_field :isbn, value: book[:isbn] %>
-                    <%= f.submit "積み本登録", class: "btn btn-primary " %>
-                  <% end %>
-                <% end %>
-              </td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <% end %>
+  <% end %>
 
   <p><%= link_to "自分で本を登録", new_book_path, class: "btn btn-secondary" %></p>
+
+  <h2>最近人気な本</h2>
+  <table class="table table-hover table-inverse">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Title</th>
+        <th>Outline</th>
+        <th colspan="4"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @book_all.each do |book| %>
+        <tr>
+          <td>
+            <% if book.image_url.present? %>
+              <%= image_tag book.image_url, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+            <% elsif book.image.attached? %>
+              <%= image_tag book.image, format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+            <% else %>
+              <%= image_tag "no_book_image.png", format: "jpeg", fallback: "no_image.jpg", size:"50x75" %>
+            <% end %>
+          </td>
+          <td><%= link_to book.title, book_path(book.id) %></td>
+          <td><%= book.body %></td>
+          <!-- Add the links or buttons here -->
+          <!-- Example for "詳細" link -->
+          <td>
+          <% if current_user.present? %>
+            <%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary mt-2" %>
+          <% end %>
+          <% if current_user.present? %>
+            <% if current_user.like?(book) %>
+                <%= form_with(model: current_user.likes.find_by(book_id: book.id), local: true, method: :delete) do |f| %>
+                  <%= hidden_field_tag :book_id, book.id %>
+                  <%= f.submit '登録解除', class: 'btn btn-danger mt-2' %>
+                <% end %>
+              </td>
+            <% else %>
+                <%= form_with(model: current_user.likes.build, local: true) do |f| %>
+                  <%= hidden_field_tag :book_id, book.id %>
+                  <%= f.submit 'お気に入り登録', class: 'btn btn-primary mt-2' %>
+                <% end %>
+              </td>
+            <% end %>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
