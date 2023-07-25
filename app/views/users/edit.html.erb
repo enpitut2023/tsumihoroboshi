@@ -6,21 +6,21 @@
                 <h1>ユーザー情報の編集</h1>
               </div>
               <%= form_with model:@user, local:true do |f| %>
-                <div class="form-group">
+                <div class="form-group mt-4">
                   <%= f.label :name %>
                   <%= f.text_field :name, class: "form-control" %>
                 </div>
-                <div class="form-group">
+                <div class="form-group mt-2 mb-2">
                   <%= f.label :email %>
                   <%= f.text_field :email, class: "form-control" %>
                 </div>
                 <% if @user.current_level < 5 %>
                   <%= f.label :image %>
                   <p>レベルが5以上になると画像変更できます！</p>
-                  <%= f.file_field :image, class: "form-control", disabled: true %>
+                  <%= f.file_field :image, class: "form-control mt-2", disabled: true %>
                 <% else %>
                   <%= f.label :image %>
-                  <%= f.file_field :image, class: "form-control" %>
+                  <%= f.file_field :image, class: "form-control mt-2" %>
                 <% end %>
                 <div>
                   <%= f.submit "更新する", class: "btn btn-success mt-4" %>
