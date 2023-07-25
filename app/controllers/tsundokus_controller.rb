@@ -14,7 +14,7 @@ class TsundokusController < ApplicationController
       end
       redirect_to user_path(current_user.id)
     else
-      redirect_to books_path
+      redirect_to user_path(current_user.id)
     end
   end
 
