@@ -11,6 +11,17 @@ class UsersController < ApplicationController
         end
         return Date.new(pYear,pMonth,1)
       end
+    
+      def beginning_of_next_month(num) #今月からnum月前の初日を返す。
+        today=Date.today
+        pMonth=today.month+num
+        pYear=today.year
+        if pMonth >12
+          pMonth -= 12
+          pYear += 1
+        end
+        return Date.new(pYear,pMonth,1)
+      end 
 
     def show
         @user = User.find(params[:id])
@@ -22,10 +33,10 @@ class UsersController < ApplicationController
         #@deadlines = Tsundoku.where(deadline: deadline.beginning_of_month.beginning_of_week..deadline.end_of_month.end_of_week,user_id: @user.id)
 
         3.times do |i|
-            deadline = params.fetch(:deadline, beginning_of_previous_month(i)).to_date
+            deadline = params.fetch(:deadline, beginning_of_next_month(i)).to_date
             @deadlines = Tsundoku.where(deadline: deadline.beginning_of_month...deadline.end_of_month,user_id: @user.id)
-            @list[2-i][0]=@deadlines
-            @list[2-i][1]=beginning_of_previous_month(i)
+            @list[i][0]=@deadlines
+            @list[i][1]=beginning_of_next_month(i)
         end
     end
 
