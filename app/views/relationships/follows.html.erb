@@ -6,6 +6,7 @@
                     <h1>フォロー一覧</h1>
                 </div>
                 <% @followings.each do |user| %>
+                <%= link_to user_path(user.id), class: "no-link-style" do %>
                 <div class="d-flex flex-row justify-content-between align-items-center">
                     <div class="d-flex flex-row align-items-center">                            
                         <% if user.image.attached? %>
@@ -24,13 +25,16 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center mt-2">
+                    <% if !(current_user.present? and current_user == user) %>
                         <% if current_user.following?(user) %>
                         <%= link_to "フォロー外す", user_relationships_path(user.id), method: :delete, class: "btn btn-outline-danger btn-sm" %>
                         <% else %>
                         <%= link_to "フォローする", user_relationships_path(user.id), method: :post, class: "btn btn-outline-primary btn-sm" %>
                         <% end %>
+                    <% end %>
                     </div>
                 </div>
+                <% end %>
                 <% end %>
             </div>
         </div>
@@ -41,6 +45,7 @@
                     <h1>フォロワー一覧</h1>
                 </div>
                 <% @followers.each do |user| %>
+                <%= link_to user_path(user.id), class: "no-link-style" do %>
                 <div class="d-flex flex-row justify-content-between align-items-center">
                     <div class="d-flex flex-row align-items-center">                            
                         <% if user.image.attached? %>
@@ -59,13 +64,16 @@
                         </div>
                     </div>
                     <div class="d-flex flex-row align-items-center mt-2">
+                    <% if !(current_user.present? and current_user == user) %>
                         <% if current_user.following?(user) %>
                         <%= link_to "フォロー外す", user_relationships_path(user.id), method: :delete, class: "btn btn-outline-danger btn-sm" %>
                         <% else %>
                         <%= link_to "フォローする", user_relationships_path(user.id), method: :post, class: "btn btn-outline-primary btn-sm" %>
                         <% end %>
+                    <% end %>
                     </div>
                 </div>
+                <% end %>
                 <% end %>
             </div>
         </div>

@@ -44,3 +44,9 @@
     display: flex;
     justify-content: start;
 }
+
+.no-link-style {
+    text-decoration: none;
+    color: inherit;
+    /* This will inherit the color from its parent element (black by default) */
+}
