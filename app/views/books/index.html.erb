@@ -87,13 +87,13 @@
             <% if current_user.like?(book) %>
                 <%= form_with(model: current_user.likes.find_by(book_id: book.id), local: true, method: :delete) do |f| %>
                   <%= hidden_field_tag :book_id, book.id %>
-                  <%= f.submit '登録解除', class: 'btn btn-danger mt-2' %>
+                  <%= image_submit_tag("star_filled.png",style: "width: 25px; height: 25px;") %>
                 <% end %>
               </td>
             <% else %>
                 <%= form_with(model: current_user.likes.build, local: true) do |f| %>
                   <%= hidden_field_tag :book_id, book.id %>
-                  <%= f.submit 'お気に入り登録', class: 'btn btn-primary mt-2' %>
+                  <%= image_submit_tag("star_unfilled.png",style: "width: 25px; height: 25px;") %>
                 <% end %>
               </td>
             <% end %>
