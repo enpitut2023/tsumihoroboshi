@@ -79,6 +79,7 @@
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
                         <h2 class="mt-4">読書タイマー</h2>
+                        <p class="mt-4 lead">開始して読書を初めましょう</p>
                         <div id="time">00:00:00</div>
                         <div id="buttons">
                             <input id="start" type="button" value="タイマー開始">
@@ -233,6 +234,9 @@
                     <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg"%>
                 </div>
             <% end %>
+            <p class="text-center lead">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
+            
+            
             <div class="mb-5 border">
                 <h2 class="border-bottom p-3">これから読む</h2>
                 <table class='table table-hover table-inverse'>
