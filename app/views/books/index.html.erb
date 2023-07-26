@@ -18,7 +18,7 @@
         <tr>
           <th></th>
           <th>Title</th>
-          <th>Opinion</th>
+          <th>Outline</th>
           <th colspan="4"></th>
         </tr>
       </thead>
@@ -80,17 +80,20 @@
           <!-- Add the links or buttons here -->
           <!-- Example for "詳細" link -->
           <td>
-          <% if current_user.present? %>
-            <%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary mt-2" %>
-          <% end %>
+            <% if current_user.present? %>
+              <%= link_to "積み本登録", book_tsundokus_path(book.id), method: :post, class: "btn btn-primary mt-2" %>
+            <% end %>
+          </td>
           <% if current_user.present? %>
             <% if current_user.like?(book) %>
+              <td>
                 <%= form_with(model: current_user.likes.find_by(book_id: book.id), local: true, method: :delete) do |f| %>
                   <%= hidden_field_tag :book_id, book.id %>
                   <%= image_submit_tag("star_filled.png",style: "width: 25px; height: 25px;") %>
                 <% end %>
               </td>
             <% else %>
+              <td>
                 <%= form_with(model: current_user.likes.build, local: true) do |f| %>
                   <%= hidden_field_tag :book_id, book.id %>
                   <%= image_submit_tag("star_unfilled.png",style: "width: 25px; height: 25px;") %>

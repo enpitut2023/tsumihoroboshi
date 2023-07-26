@@ -1,38 +1,49 @@
 <div class="container mt-5">
-        <div class="d-flex justify-content-center row">
-            <div class="col-md-6">
-                <div class="p-3 bg-white text-center">
-                    <div>
-                        <h1>メモの編集</h1>
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-6">
+            <div class="p-3 bg-white text-center">
+                <div>
+                    <h1>メモの編集</h1>
+                </div>
+                <%= form_with model: [@tsundoku.book, @tsundoku], local: true do |f| %>
+                  <div class="form-group">
+                    <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                      <label class="btn btn-outline-primary">
+                        <%= f.radio_button :reading_status, 0, checked: true, id: "item-1" %>
+                        買っただけ
+                      </label>
+                      <label class="btn btn-outline-primary">
+                        <%= f.radio_button :reading_status, 1, id: "item-2" %>
+                        途中
+                      </label>
+                      <label class="btn btn-outline-primary">
+                        <%= f.radio_button :reading_status, 2, id: "item-3" %>
+                        読了
+                      </label>
                     </div>
-                  <%= form_with model: [@tsundoku.book, @tsundoku], local: true do |f| %>
-                    <div class="form-group">
-                      <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                        <label class="btn btn-outline-primary active">
-                          <%= f.radio_button :reading_status, 0, checked: true, id: "item-1" %>
-                          買っただけ
-                        </label>
-                        <label class="btn btn-outline-primary">
-                          <%= f.radio_button :reading_status, 1, id: "item-2" %>
-                          途中
-                        </label>
-                        <label class="btn btn-outline-primary">
-                          <%= f.radio_button :reading_status, 2, id: "item-3" %>
-                          読了
-                        </label>
-                      </div>
-                    </div>
-                    
-                    <div class="form-group mt-4">
+                  </div>
+
+                  <div class="form_group mt-4">
+                      <%= f.label :deadline %>
+                      <%= f.datetime_field :deadline, class: "form-control" %>
+                  </div>
+                  
+                  <div class="form-group mt-4">
                       <%= f.label :memo %>
                       <%= f.text_area :memo, class: "form-control" %>
-                    </div>
-                    
-                    <div class="form-group mt-4">
+                  </div>
+                  
+                  <div class="form-group mt-4">
                       <%= f.submit "更新", class: "btn btn-primary" %>
-                    </div>
-                  <% end %>
-                </div>
-              <div>
+                  </div>
+                <% end %>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <%= link_to "削除はこちら", book_tsundoku_path(book_id: @tsundoku.book.id, id: @tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "" %>
             </div>
-          <div>
+        <div>
+    </div>
+<div>
