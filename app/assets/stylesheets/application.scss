@@ -47,6 +47,7 @@
 
 .open {
 	cursor:pointer; /* マウスオーバーでカーソルの形状を変えることで、クリックできる要素だとわかりやすいように */
+	background-color: #00000040;
 }
 #pop-up {
 	display: none; /* label でコントロールするので input は非表示に */
@@ -93,4 +94,32 @@
     text-decoration: none;
     color: inherit;
     /* This will inherit the color from its parent element (black by default) */
+}
+
+.outline-column {
+	width: 75%;
+	/* 必要に応じて幅を調整してください */
+}
+
+.title-column {
+	width: 40%;
+	/* 必要に応じて幅を調整してください */
+}
+
+.animated-btn{
+    animation: mocchiri 3s infinite;
+}
+@keyframes mocchiri {
+    0% {
+        transform: scale(1, 0.8);
+    }
+    20% {
+        transform: scale(0.8, 1.1);
+    }
+    95% {
+        transform: scale(1, 1);
+    }
+    100% {
+        transform: scale(1, 0.8);
+    }
 }

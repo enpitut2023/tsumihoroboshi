@@ -11,18 +11,30 @@
                                 <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image img-fluid", style: "width: 150px; height: auto;" %>
                             <% end %>
                             <% if current_user.present? and current_user == @user %>
-                                <%= link_to edit_user_path(current_user.id), class: "text-decoration-none" do %>
-                                    <div class="d-flex flex-column align-items-center">
-                                        <div class="border border-dark rounded w-75 mt-2">
-                                            <span class="ml-2 pt-2">ユーザー編集</span> <%= image_tag("gear.jpg", size: "30x30") %>
+                                <%= link_to edit_user_path(current_user.id), class: "text-decoration-none " do %>
+                                    <div class="d-flex flex-column align-items-center mt-2">
+                                        <div class="border border-secondary rounded w-75 mt-2">
+                                            <%= image_tag("gear.jpg", size: "30x30") %>
                                         </div>
                                     </div>
                                 <% end %>
                             <% elsif current_user.present? %>
                                 <% if current_user.following?(@user) %>
-                                    <%= link_to "フォロー外す", user_relationships_path(@user.id), method: :delete %>
+                                    <%= link_to user_relationships_path(@user.id), method: :delete, class: "text-decoration-none" do %>
+                                        <div class="d-flex flex-column align-items-center mt-2">
+                                            <div class="border border-danger rounded w-75 mt-2">
+                                                <span class="ml-2 pt-2 text-danger">フォロー外す</span>
+                                            </div>
+                                        </div>
+                                    <% end %>
                                 <% else %>
-                                    <%= link_to "フォローする", user_relationships_path(@user.id), method: :post %>
+                                    <%= link_to user_relationships_path(@user.id), method: :post, class: "text-decoration-none" do %>
+                                        <div class="d-flex flex-column align-items-center">
+                                            <div class="border border-primary rounded w-75 mt-2">
+                                                <span class="ml-2 pt-2 text-primary">フォローする</span>
+                                            </div>
+                                        </div>
+                                    <% end %>
                                 <% end %>
                             <% end %>
                             <div class="card-text mt-4">ユーザー名: <%= @user.name %></div>
@@ -70,25 +82,27 @@
                                     <% end %>
                                 </div>
                             </div>
-                            <div class="card-text">現在の経験値: <%= @user.exp %></div>
+                            <div class="card-text">現在のEXP: <%= @user.exp %>pt</div>
                             <div class="card-text">現在のレベル: <%= @user.current_level %></div>
                             <div class="level-bar mt-2">
                                 <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
                             </div>
 
-                            <label class="open" for="pop-up">レベルを上げるには？</label>
+                            <label class="open mt-2 border-bottom border-dark" for="pop-up">レベルを上げるには？</label>
                             <input type="checkbox" id="pop-up">
                             <div class="overlay">
                                 <div class="window">
                                     <label class="close" for="pop-up">×</label>
                                     <div class="text">
-                                    <h3>アプリを利用して経験値をためよう</h3>
-                                    <p>経験値を100集めるとレベルが1上がる</p>
-                                    <p>レベルを上げることで新しい機能が解放されたり</p>
-                                    <p>特別なバッジが名前の横についたりするかも</p>
+                                    <h3>アプリを利用してEXPをためよう</h3>
+                                    <div>
+                                    <p>EXPを100集めるとレベルが1上がる<br>
+                                    レベルを上げることで新しい機能が解放されたり<br>
+                                    特別なバッジが名前についたりするかも</p>
+                                    </div>
                                     <table>
                                         <tr>
-                                            <td>expの獲得方法</td>
+                                            <td>EXPの獲得方法</td>
                                             <td>獲得ポイント</td>
                                         </tr>
                                         <tr>
@@ -104,183 +118,191 @@
                                             <td>10pt(1日5回)</td>
                                         </tr>
                                         <tr>
-                                        <td>本を読む(読書タイマーはレベル10で解放)</td>
-                                        <td>1pt/1分(1回30ptまで)</td>
+                                        <td>本を読む(読書タイマーはレベル10から)</td>
+                                        <td>1pt/分(1回30ptまで)</td>
                                         </tr>                           
                                         <!-- 追加の行をここに追加 -->
                                     </table>
                                     </div>
                                 </div>
                             </div>
+
+                            <% if user_signed_in? and current_user == @user %>
+                                <div>
+                                    <%= link_to "デモ: 30EXP獲得ボタン", user_level_up_path(current_user, level_id: 0), method: :post, class: "btn btn-primary mt-5" %>
+                                    <%= link_to "デモ: 銅称号までボタン", user_level_up_path(current_user, level_id: 1), method: :post, class: "btn btn-primary mt-2" %>
+                                    <%= link_to "デモ: 銀称号までボタン", user_level_up_path(current_user, level_id: 2), method: :post, class: "btn btn-primary mt-2" %>
+                                    <%= link_to "デモ: 金称号までボタン", user_level_up_path(current_user, level_id: 3), method: :post, class: "btn btn-primary mt-2" %>
+                                </div>
+                            <% end %>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="card mt-3 mb-5">
                 <div class="card-body">
-                    <div class="card-text">フォロー数: <%= @user.followings.count %></div>
-                    <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
-                    <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
-                    <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
-                    <div class="search_form mt-4">
-                        <%= form_with url: user_searches_path(user_id: @user.id), local: true, method: :get do |f| %>
-                            <%= f.text_field :word, placeholder: "ユーザー内検索", class: "form-control" %>
-                            <%= f.select :range, options_for_select([['User'], ['Book']]) %>
-                            <%= f.submit "検索", class: "btn btn-primary" %>
-                        <% end %>
+                    <div class="row justify-content-center">
+                        <div class="col-12 text-center">
+                            <div class="card-text">フォロー数: <%= @user.followings.count %></div>
+                            <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
+                            <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
+                            <% if user_signed_in? and current_user == @user %>
+                                <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                            <% end %>
+                            <!--ここからストップウォッチ-->
+                            <% if current_user.present? and current_user == @user %> 
+                                <input type="hidden" id="user-id" value="<%= @user.id %>">
+                                <h3 class="mt-4">読書タイマー</h3>
+                                <% if current_user.current_level < 10 %>
+                                    <p>レベルが10以上になると使用できます!</p>
+                                <% else %>
+                                    <div id="time">00:00:00</div>
+                                    <div id="buttons">
+                                        <input id="start" type="button" value="タイマー開始">
+                                        <input id="pause" type="button" value="一時停止" disabled=true>
+                                        <input id="stop" type="button" value="記録" disabled=true>
+                                        <input id="reset" type="button" value="リセット" disabled=true>
+                                    </div>
+                                <% end %>
+
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', () => {
+                                    const time = document.getElementById('time');
+                                    const startButton = document.getElementById('start');
+                                    const pauseButton = document.getElementById('pause');
+                                    const stopButton = document.getElementById('stop');
+                                    const resetButton = document.getElementById('reset');
+
+                                    // 開始時間
+                                    let startTime;
+                                    // 停止時間
+                                    let stopTime = 0;
+                                    // タイムアウトID
+                                    let timeoutID;
+
+                                    let isPause = true;
+
+                                    function displayTime() {
+                                        const currentTime = new Date(Date.now() - startTime + stopTime);
+                                        const h = String(currentTime.getHours()-9).padStart(2, '0');
+                                        const m = String(currentTime.getMinutes()).padStart(2, '0');
+                                        const s = String(currentTime.getSeconds()).padStart(2, '0');
+                                        const st = String(new Date(startTime));
+                                        const nt = String(new Date(Date.now()));
+                                        const pt = String(new Date(stopTime));
+                                        
+
+                                        time.textContent = `${h}:${m}:${s}`;
+                                        timeoutID = setTimeout(displayTime, 10);
+                                    }
+
+                                    startButton.addEventListener('click', () => {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                                        fetch(`/users/${userId}/timers/start`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }
+                                        })
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                            const { id } = data;
+                                            timerId = id;
+
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            startTime = Date.now();
+                                            displayTime();
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
+
+                                    pauseButton.addEventListener('click', function() {
+                                        if(isPause) {
+                                            isPause = false;
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = false;
+                                            resetButton.disabled = false;
+                                            pauseButton.value = "　再開　";
+                                            clearTimeout(timeoutID);
+                                            stopTime += (Date.now() - startTime);
+                                        }else {
+                                            isPause = true;
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            pauseButton.value = "一時停止";
+                                            startTime = Date.now();
+                                            displayTime();
+                                        }
+                                        
+
+                                    });
+
+                                    stopButton.addEventListener('click', function() {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                                        const inputData = {
+                                        duration: stopTime
+                                        };
+
+                                        fetch(`/users/${userId}/timers/${timerId}/stop`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }, 
+                                        body: JSON.stringify(inputData)
+                                        })
+                                        .then((response) => response.json())
+                                        .then(() => {
+                                            isPause = true;
+                                            startButton.disabled = false;
+                                            pauseButton.disabled = true;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            time.textContent = '00:00:00';
+                                            stopTime = 0;
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
+
+                                    resetButton.addEventListener('click', function() {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                                        fetch(`/users/${userId}/timers/${timerId}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }
+                                        })
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                            isPause = true;
+                                            startButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            time.textContent = '00:00:00';
+                                            stopTime = 0;
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
+
+                                    });
+                                </script>
+                            <% end %>
+                            <!--ここまでストップウォッチ-->
+                        </div>
                     </div>
-                    <!--ここからストップウォッチ-->
-                    <% if current_user.present? and current_user == @user %> 
-                        <input type="hidden" id="user-id" value="<%= @user.id %>">
-                        <h3 class="mt-4">読書タイマー</h3>
-                        <% if current_user.current_level < 10 %>
-                            <p>レベルが10以上になると使用できます！</p>
-                        <% else %>
-                            <div id="time">00:00:00</div>
-                            <div id="buttons">
-                                <input id="start" type="button" value="タイマー開始">
-                                <input id="pause" type="button" value="一時停止" disabled=true>
-                                <input id="stop" type="button" value="記録" disabled=true>
-                                <input id="reset" type="button" value="リセット" disabled=true>
-                            </div>
-                        <% end %>
-
-                        <script>
-                            document.addEventListener('DOMContentLoaded', () => {
-                            const time = document.getElementById('time');
-                            const startButton = document.getElementById('start');
-                            const pauseButton = document.getElementById('pause');
-                            const stopButton = document.getElementById('stop');
-                            const resetButton = document.getElementById('reset');
-
-                            // 開始時間
-                            let startTime;
-                            // 停止時間
-                            let stopTime = 0;
-                            // タイムアウトID
-                            let timeoutID;
-
-                            let isPause = true;
-
-                            function displayTime() {
-                                const currentTime = new Date(Date.now() - startTime + stopTime);
-                                const h = String(currentTime.getHours()-9).padStart(2, '0');
-                                const m = String(currentTime.getMinutes()).padStart(2, '0');
-                                const s = String(currentTime.getSeconds()).padStart(2, '0');
-                                const st = String(new Date(startTime));
-                                const nt = String(new Date(Date.now()));
-                                const pt = String(new Date(stopTime));
-                                
-
-                                time.textContent = `${h}:${m}:${s}`;
-                                timeoutID = setTimeout(displayTime, 10);
-                            }
-
-                            startButton.addEventListener('click', () => {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                                fetch(`/users/${userId}/timers/start`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    const { id } = data;
-                                    timerId = id;
-
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    startTime = Date.now();
-                                    displayTime();
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
-
-                            pauseButton.addEventListener('click', function() {
-                                if(isPause) {
-                                    isPause = false;
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = false;
-                                    resetButton.disabled = false;
-                                    pauseButton.value = "　再開　";
-                                    clearTimeout(timeoutID);
-                                    stopTime += (Date.now() - startTime);
-                                }else {
-                                    isPause = true;
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    pauseButton.value = "一時停止";
-                                    startTime = Date.now();
-                                    displayTime();
-                                }
-                                
-
-                            });
-
-                            stopButton.addEventListener('click', function() {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                                const inputData = {
-                                duration: stopTime
-                                };
-
-                                fetch(`/users/${userId}/timers/${timerId}/stop`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }, 
-                                body: JSON.stringify(inputData)
-                                })
-                                .then((response) => response.json())
-                                .then(() => {
-                                    isPause = true;
-                                    startButton.disabled = false;
-                                    pauseButton.disabled = true;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    time.textContent = '00:00:00';
-                                    stopTime = 0;
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
-
-                            resetButton.addEventListener('click', function() {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                                fetch(`/users/${userId}/timers/${timerId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    isPause = true;
-                                    startButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    time.textContent = '00:00:00';
-                                    stopTime = 0;
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
-
-                            });
-                        </script>
-                    <% end %>
-                    <!--ここまでストップウォッチ-->
                 </div>
             </div>
         </div>
@@ -288,10 +310,14 @@
         <div class="col-md-8">
             <% if user_signed_in? and current_user.id == @user.id %>
                 <div class="d-flex justify-content-center mb-5">
+                <% if @user.tsundokus.count == 0 %>
+                    <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg animated-btn"%>
+                <% else %>
                     <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg"%>
+                <% end %>
                 </div>
             <% end %>
-            <p class="text-center lead">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
+            <p class="text-center">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
             
             
             <div class="mb-5 border">
@@ -315,24 +341,15 @@
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
                                 <% if user_signed_in? and current_user.id == @user.id %>
                                     <td>
-                                        <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
-                                            <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                        <% else %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
                                         <% end %>
                                     </td>
-                                    
                                     <td>
                                         <% if tsundoku.memo.present? %>
                                             <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                                         <% end %>
                                     </td>
                                     <td>
@@ -355,6 +372,23 @@
                                         <% end %>
                                     </td>
                                     <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
+                                <% end %>
+                                <% if current_user.present? %>
+                                    <% if current_user.like?(tsundoku.book) %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.find_by(book_id: tsundoku.book.id), local: true, method: :delete) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_filled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% else %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.build, local: true) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_unfilled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% end %>
                                 <% end %>
                             </tr>
                         <% end %>
@@ -385,23 +419,15 @@
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
                                 <% if user_signed_in? and current_user.id == @user.id %>
                                     <td>
-                                        <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
-                                            <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.datetime_field :deadline, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                        <% else %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
                                         <% end %>
                                     </td>
                                     <td>
                                         <% if tsundoku.memo.present? %>
                                             <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                                         <% end %>
                                     </td>
                                     <td>
@@ -424,6 +450,23 @@
                                         <% end %>
                                     </td>
                                     <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
+                                <% end %>
+                                <% if current_user.present? %>
+                                    <% if current_user.like?(tsundoku.book) %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.find_by(book_id: tsundoku.book.id), local: true, method: :delete) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_filled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% else %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.build, local: true) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_unfilled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% end %>
                                 <% end %>
                             </tr>
                         <% end %>
@@ -452,26 +495,36 @@
                                 <td><%= link_to tsundoku.book.title, book_path(tsundoku.book.id) %></td>
                                 <% if user_signed_in? and current_user.id == @user.id %>
                                     <td>
-                                        <%= form_with model:[tsundoku.book, tsundoku], local:true do |f| %>
-                                            <%= f.select :reading_status, options_for_select([['これから読む', 0], ['読んでいる', 1], ['読み終わった', 2]], tsundoku.reading_status), {}, class: "form-control" %>
-                                            <%= f.submit "更新", class: "btn btn-success" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
+                                        <% else %>
+                                            <%= link_to "編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), class: "btn btn-secondary mt-2" %>
                                         <% end %>
                                     </td>
                                     <td>
                                         <% if tsundoku.memo.present? %>
                                             <%= tsundoku.memo %>
-                                            <%= link_to "メモの編集", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% else %>
-                                            <%= link_to "メモの追加", edit_book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id) %>
-                                        <% end %>
-                                    </td>
-                                    <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' } %>
                                         <% end %>
                                     </td>
                                 <% else %>
                                     <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
+                                <% end %>
+                                <% if current_user.present? %>
+                                    <% if current_user.like?(tsundoku.book) %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.find_by(book_id: tsundoku.book.id), local: true, method: :delete) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_filled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% else %>
+                                    <td>
+                                        <%= form_with(model: current_user.likes.build, local: true) do |f| %>
+                                        <%= hidden_field_tag :book_id, tsundoku.book.id %>
+                                        <%= image_submit_tag("star_unfilled.png",style: "width: 25px; height: 25px;") %>
+                                        <% end %>
+                                    </td>
+                                    <% end %>
                                 <% end %>
                             </tr>
                         <% end %>
@@ -479,16 +532,24 @@
                 </table>
             </div>
 
-            <div class="calender mt-5">
-                <% for deadlines in @list %>
-                <%= month_calendar(attribute: :deadline, events: deadlines[0], start_date: deadlines[1]) do |date,deadlines| %>
-                    <%= date.day %>
+            <div class="container mt-5">
+                <% for deadlines in @list.each_slice(3) %> 
+                <div class="row">
                     <% deadlines.each do |deadline| %>
-                        <div class="bg-danger rounded p-3">
-                        </div>
-
+                    <div class="col-md-9 col-lg-6"> 
+                        <%= month_calendar(attribute: :deadline, events: deadline[0], start_date: deadline[1]) do |date, deadlines| %>
+                            <div class="day">
+                                <%= date.day %>
+                                <% deadlines.each do |d| %>
+                                    <div class="bg-danger rounded p-3">
+                                        <!-- ここに日付に関連するイベントなどを表示するコードを追加 -->
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
                     <% end %>
-                <% end %>
+                </div>
                 <% end %>
             </div>
         </div>
