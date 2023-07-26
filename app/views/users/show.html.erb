@@ -465,16 +465,24 @@
                 </table>
             </div>
 
-            <div class="calender mt-5">
-                <% for deadlines in @list %>
-                <%= month_calendar(attribute: :deadline, events: deadlines[0], start_date: deadlines[1]) do |date,deadlines| %>
-                    <%= date.day %>
+            <div class="container mt-5">
+                <% for deadlines in @list.each_slice(3) %> 
+                <div class="row">
                     <% deadlines.each do |deadline| %>
-                        <div class="bg-danger rounded p-3">
-                        </div>
-
+                    <div class="col-md-9 col-lg-6"> 
+                        <%= month_calendar(attribute: :deadline, events: deadline[0], start_date: deadline[1]) do |date, deadlines| %>
+                            <div class="day">
+                                <%= date.day %>
+                                <% deadlines.each do |d| %>
+                                    <div class="bg-danger rounded p-3">
+                                        <!-- ここに日付に関連するイベントなどを表示するコードを追加 -->
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
                     <% end %>
-                <% end %>
+                </div>
                 <% end %>
             </div>
         </div>
