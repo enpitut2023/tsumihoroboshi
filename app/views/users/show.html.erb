@@ -141,33 +141,14 @@
             </div>
             <div class="card mt-3 mb-5">
                 <div class="card-body">
-                    <div class="card-text">フォロー数: <%= @user.followings.count %></div>
-                    <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
-                    <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
-                    <% if user_signed_in? and current_user == @user %>
-                        <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
-                    <% end %>
-                    <!--ここからストップウォッチ-->
-                    <% if current_user.present? and current_user == @user %> 
-                        <input type="hidden" id="user-id" value="<%= @user.id %>">
-                        <h3 class="mt-4">読書タイマー</h3>
-                        <% if current_user.current_level < 10 %>
-                            <p>レベルが10以上になると使用できます!</p>
-                        <% else %>
-                            <div id="time">00:00:00</div>
-                            <div id="buttons">
-                                <input id="start" type="button" value="タイマー開始">
-                                <input id="pause" type="button" value="一時停止" disabled=true>
-                                <input id="stop" type="button" value="記録" disabled=true>
-                                <input id="reset" type="button" value="リセット" disabled=true>
-                            </div>
-                        <% end %>
                     <div class="row justify-content-center">
-                        <div class="col-8 text-center">
+                        <div class="col-12 text-center">
                             <div class="card-text">フォロー数: <%= @user.followings.count %></div>
                             <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
                             <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
-                            <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                            <% if user_signed_in? and current_user == @user %>
+                                <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                            <% end %>
                             <!--ここからストップウォッチ-->
                             <% if current_user.present? and current_user == @user %> 
                                 <input type="hidden" id="user-id" value="<%= @user.id %>">
@@ -248,7 +229,7 @@
                                             pauseButton.disabled = false;
                                             stopButton.disabled = false;
                                             resetButton.disabled = false;
-                                            pauseButton.value = "再開";
+                                            pauseButton.value = "　再開　";
                                             clearTimeout(timeoutID);
                                             stopTime += (Date.now() - startTime);
                                         }else {
