@@ -26,6 +26,8 @@ Rails.application.routes.draw do
     end
   end
 
+  post "/users/:id/level_up", to: "users#level_up", as: :user_level_up
+
   resources :likes, only: %i[index create destroy]
 
   post "/users/:user_id/timers/start", to: 'timers#start'
