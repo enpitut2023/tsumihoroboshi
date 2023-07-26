@@ -61,7 +61,16 @@ class UsersController < ApplicationController
         if current_user != @user
             redirect_to user_path(current_user.id)
         else
-            current_user.update(exp: current_user.exp + @login_exp)
+            level_id = params[:level_id].to_i
+            if level_id == 0
+                current_user.update(exp: current_user.exp + @login_exp)
+            elsif level_id == 1
+                current_user.update(exp: 900)
+            elsif level_id == 2
+                current_user.update(exp: 2900)
+            elsif level_id == 3
+                current_user.update(exp: 4900)
+            end
             redirect_to user_path(current_user.id)
         end
     end

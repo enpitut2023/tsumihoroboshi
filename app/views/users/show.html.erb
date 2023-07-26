@@ -82,7 +82,7 @@
                                     <% end %>
                                 </div>
                             </div>
-                            <div class="card-text">現在の経験値: <%= @user.exp %></div>
+                            <div class="card-text">現在のEXP: <%= @user.exp %>pt</div>
                             <div class="card-text">現在のレベル: <%= @user.current_level %></div>
                             <div class="level-bar mt-2">
                                 <div class="level-progress" style="width: <%= level_progress_percentage(@user) %>%"></div>
@@ -94,15 +94,15 @@
                                 <div class="window">
                                     <label class="close" for="pop-up">×</label>
                                     <div class="text">
-                                    <h3>アプリを利用して経験値をためよう</h3>
+                                    <h3>アプリを利用してEXPをためよう</h3>
                                     <div>
-                                    <p>経験値を100集めるとレベルが1上がる<br>
+                                    <p>EXPを100集めるとレベルが1上がる<br>
                                     レベルを上げることで新しい機能が解放されたり<br>
                                     特別なバッジが名前についたりするかも</p>
                                     </div>
                                     <table>
                                         <tr>
-                                            <td>expの獲得方法</td>
+                                            <td>EXPの獲得方法</td>
                                             <td>獲得ポイント</td>
                                         </tr>
                                         <tr>
@@ -129,7 +129,10 @@
 
                             <% if user_signed_in? and current_user == @user %>
                                 <div>
-                                    <%= link_to "デモ用EXP獲得ボタン", user_level_up_path(current_user), method: :post, class: "btn btn-primary mt-5" %>
+                                    <%= link_to "デモ: 30EXP獲得ボタン", user_level_up_path(current_user, level_id: 0), method: :post, class: "btn btn-primary mt-5" %>
+                                    <%= link_to "デモ: 銅称号までボタン", user_level_up_path(current_user, level_id: 1), method: :post, class: "btn btn-primary mt-2" %>
+                                    <%= link_to "デモ: 銀称号までボタン", user_level_up_path(current_user, level_id: 2), method: :post, class: "btn btn-primary mt-2" %>
+                                    <%= link_to "デモ: 金称号までボタン", user_level_up_path(current_user, level_id: 3), method: :post, class: "btn btn-primary mt-2" %>
                                 </div>
                             <% end %>
                         </div>
@@ -141,7 +144,9 @@
                     <div class="card-text">フォロー数: <%= @user.followings.count %></div>
                     <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
                     <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
-                    <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                    <% if user_signed_in? and current_user == @user %>
+                        <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                    <% end %>
                     <!--ここからストップウォッチ-->
                     <% if current_user.present? and current_user == @user %> 
                         <input type="hidden" id="user-id" value="<%= @user.id %>">
