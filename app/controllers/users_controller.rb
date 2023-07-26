@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user!, only: [:edit, :update]
+    before_action :authenticate_user!, only: [:edit, :update, :level_up]
 
     def beginning_of_previous_month(num) #今月からnum月前の初日を返す。
         today=Date.today
@@ -54,6 +54,16 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
         @user.update(user_params)
         redirect_to user_path(current_user.id)
+    end
+
+    def level_up
+        @user = User.find(params[:id])
+        if current_user != @user
+            redirect_to user_path(current_user.id)
+        else
+            current_user.update(exp: current_user.exp + @login_exp)
+            redirect_to user_path(current_user.id)
+        end
     end
 
     private

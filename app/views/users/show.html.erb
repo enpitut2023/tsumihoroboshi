@@ -126,6 +126,12 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <% if user_signed_in? and current_user == @user %>
+                                <div>
+                                    <%= link_to "デモ用EXP獲得ボタン", user_level_up_path(current_user), method: :post, class: "btn btn-primary mt-5" %>
+                                </div>
+                            <% end %>
                         </div>
                     </div>
                 </div>
