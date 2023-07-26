@@ -95,3 +95,21 @@
     color: inherit;
     /* This will inherit the color from its parent element (black by default) */
 }
+
+.animated-btn{
+    animation: mocchiri 3s infinite;
+}
+@keyframes mocchiri {
+    0% {
+        transform: scale(1, 0.8);
+    }
+    20% {
+        transform: scale(0.8, 1.1);
+    }
+    95% {
+        transform: scale(1, 1);
+    }
+    100% {
+        transform: scale(1, 0.8);
+    }
+}

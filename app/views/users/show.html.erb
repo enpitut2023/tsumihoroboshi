@@ -295,7 +295,11 @@
         <div class="col-md-8">
             <% if user_signed_in? and current_user.id == @user.id %>
                 <div class="d-flex justify-content-center mb-5">
+                <% if @user.tsundokus.count == 0 %>
+                    <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg animated-btn"%>
+                <% else %>
                     <%= link_to "本を探しに行きましょう！", books_path, class: "btn btn-primary btn-lg"%>
+                <% end %>
                 </div>
             <% end %>
             <p class="text-center">本に取り組んでいる状況や、いつまでに読むかを設定しましょう！</p>
