@@ -8,7 +8,7 @@
                 <%= form_with model: [@tsundoku.book, @tsundoku], local: true do |f| %>
                   <div class="form-group">
                     <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                      <label class="btn btn-outline-primary active">
+                      <label class="btn btn-outline-primary">
                         <%= f.radio_button :reading_status, 0, checked: true, id: "item-1" %>
                         買っただけ
                       </label>
@@ -37,6 +37,12 @@
                       <%= f.submit "更新", class: "btn btn-primary" %>
                   </div>
                 <% end %>
+
+                <br/>
+                <br/>
+                <br/>
+                <br/>
+                <%= link_to "削除はこちら", book_tsundoku_path(book_id: @tsundoku.book.id, id: @tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "" %>
             </div>
         <div>
     </div>

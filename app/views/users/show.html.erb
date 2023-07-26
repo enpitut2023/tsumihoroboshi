@@ -327,15 +327,10 @@
                                         <% end %>
                                     </td>
                                     <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= tsundoku.memo %>
                                         <% end %>
                                     </td>
-                                    <% if tsundoku.memo.present? %>
-                                        <td>
-                                            <%= tsundoku.memo %>
-                                        </td>
-                                    <% end %>
                                     <td>
                                         <% if tsundoku.deadline.present? %>
                                             <% if (tsundoku.deadline - Time.zone.now).to_i / 1.day <= 0 %>
@@ -410,15 +405,10 @@
                                         <% end %>
                                     </td>
                                     <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= tsundoku.memo %>
                                         <% end %>
                                     </td>
-                                    <% if tsundoku.memo.present? %>
-                                        <td>
-                                            <%= tsundoku.memo %>
-                                        </td>
-                                    <% end %>
                                     <td>
                                         <% if tsundoku.deadline.present? %>
                                             <% if (tsundoku.deadline - Time.zone.now).to_i / 1.day <= 0 %>
@@ -491,15 +481,10 @@
                                         <% end %>
                                     </td>
                                     <td>
-                                        <% if current_user.present? and tsundoku.user == current_user %>
-                                            <%= link_to "削除", book_tsundoku_path(book_id: tsundoku.book.id, id: tsundoku.id), method: :delete, data: { confirm: '本当に削除しますか？' }, class: "btn btn-danger mt-2" %>
+                                        <% if tsundoku.memo.present? %>
+                                            <%= tsundoku.memo %>
                                         <% end %>
                                     </td>
-                                    <% if tsundoku.memo.present? %>
-                                        <td>
-                                            <%= tsundoku.memo %>
-                                        </td>
-                                    <% end %>
                                 <% else %>
                                     <td><%= link_to "自分も読む", book_tsundokus_path(tsundoku.book.id), method: :post, class: "btn btn-primary" %></td>
                                 <% end %>
