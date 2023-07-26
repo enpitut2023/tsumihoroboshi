@@ -95,9 +95,11 @@
                                     <label class="close" for="pop-up">×</label>
                                     <div class="text">
                                     <h3>アプリを利用して経験値をためよう</h3>
-                                    <p>経験値を100集めるとレベルが1上がる</p>
-                                    <p>レベルを上げることで新しい機能が解放されたり</p>
-                                    <p>特別なバッジが名前の横についたりするかも</p>
+                                    <div>
+                                    <p>経験値を100集めるとレベルが1上がる<br>
+                                    レベルを上げることで新しい機能が解放されたり<br>
+                                    特別なバッジが名前についたりするかも</p>
+                                    </div>
                                     <table>
                                         <tr>
                                             <td>expの獲得方法</td>
@@ -116,8 +118,8 @@
                                             <td>10pt(1日5回)</td>
                                         </tr>
                                         <tr>
-                                        <td>本を読む(読書タイマーはレベル10で解放)</td>
-                                        <td>1pt/1分(1回30ptまで)</td>
+                                        <td>本を読む(読書タイマーはレベル10から)</td>
+                                        <td>1pt/分(1回30ptまで)</td>
                                         </tr>                           
                                         <!-- 追加の行をここに追加 -->
                                     </table>
@@ -511,16 +513,24 @@
                 </table>
             </div>
 
-            <div class="calender mt-5">
-                <% for deadlines in @list %>
-                <%= month_calendar(attribute: :deadline, events: deadlines[0], start_date: deadlines[1]) do |date,deadlines| %>
-                    <%= date.day %>
+            <div class="container mt-5">
+                <% for deadlines in @list.each_slice(3) %> 
+                <div class="row">
                     <% deadlines.each do |deadline| %>
-                        <div class="bg-danger rounded p-3">
-                        </div>
-
+                    <div class="col-md-9 col-lg-6"> 
+                        <%= month_calendar(attribute: :deadline, events: deadline[0], start_date: deadline[1]) do |date, deadlines| %>
+                            <div class="day">
+                                <%= date.day %>
+                                <% deadlines.each do |d| %>
+                                    <div class="bg-danger rounded p-3">
+                                        <!-- ここに日付に関連するイベントなどを表示するコードを追加 -->
+                                    </div>
+                                <% end %>
+                            </div>
+                        <% end %>
+                    </div>
                     <% end %>
-                <% end %>
+                </div>
                 <% end %>
             </div>
         </div>
