@@ -11,8 +11,8 @@
                                 <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image img-fluid", style: "width: 150px; height: auto;" %>
                             <% end %>
                             <% if current_user.present? and current_user == @user %>
-                                <%= link_to edit_user_path(current_user.id), class: "text-decoration-none" do %>
-                                    <div class="d-flex flex-column align-items-center">
+                                <%= link_to edit_user_path(current_user.id), class: "text-decoration-none " do %>
+                                    <div class="d-flex flex-column align-items-center mt-2">
                                         <div class="border border-secondary rounded w-75 mt-2">
                                             <%= image_tag("gear.jpg", size: "30x30") %>
                                         </div>
@@ -21,7 +21,7 @@
                             <% elsif current_user.present? %>
                                 <% if current_user.following?(@user) %>
                                     <%= link_to user_relationships_path(@user.id), method: :delete, class: "text-decoration-none" do %>
-                                        <div class="d-flex flex-column align-items-center">
+                                        <div class="d-flex flex-column align-items-center mt-2">
                                             <div class="border border-danger rounded w-75 mt-2">
                                                 <span class="ml-2 pt-2 text-danger">フォロー外す</span>
                                             </div>
@@ -162,143 +162,166 @@
                                 <input id="reset" type="button" value="リセット" disabled=true>
                             </div>
                         <% end %>
+                    <div class="row justify-content-center">
+                        <div class="col-8 text-center">
+                            <div class="card-text">フォロー数: <%= @user.followings.count %></div>
+                            <div class="card-text">フォロワー数: <%= @user.followers.count %></div>
+                            <div class="card-text"><%= link_to "フォローフォロワー一覧", follows_user_path(@user) %></div>
+                            <div class="card-text"><%= link_to "お気に入り一覧", likes_path() %></div>
+                            <!--ここからストップウォッチ-->
+                            <% if current_user.present? and current_user == @user %> 
+                                <input type="hidden" id="user-id" value="<%= @user.id %>">
+                                <h3 class="mt-4">読書タイマー</h3>
+                                <% if current_user.current_level < 10 %>
+                                    <p>レベルが10以上になると使用できます!</p>
+                                <% else %>
+                                    <div id="time">00:00:00</div>
+                                    <div id="buttons">
+                                        <input id="start" type="button" value="タイマー開始">
+                                        <input id="pause" type="button" value="一時停止" disabled=true>
+                                        <input id="stop" type="button" value="記録" disabled=true>
+                                        <input id="reset" type="button" value="リセット" disabled=true>
+                                    </div>
+                                <% end %>
 
-                        <script>
-                            document.addEventListener('DOMContentLoaded', () => {
-                            const time = document.getElementById('time');
-                            const startButton = document.getElementById('start');
-                            const pauseButton = document.getElementById('pause');
-                            const stopButton = document.getElementById('stop');
-                            const resetButton = document.getElementById('reset');
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', () => {
+                                    const time = document.getElementById('time');
+                                    const startButton = document.getElementById('start');
+                                    const pauseButton = document.getElementById('pause');
+                                    const stopButton = document.getElementById('stop');
+                                    const resetButton = document.getElementById('reset');
 
-                            // 開始時間
-                            let startTime;
-                            // 停止時間
-                            let stopTime = 0;
-                            // タイムアウトID
-                            let timeoutID;
+                                    // 開始時間
+                                    let startTime;
+                                    // 停止時間
+                                    let stopTime = 0;
+                                    // タイムアウトID
+                                    let timeoutID;
 
-                            let isPause = true;
+                                    let isPause = true;
 
-                            function displayTime() {
-                                const currentTime = new Date(Date.now() - startTime + stopTime);
-                                const h = String(currentTime.getHours()-9).padStart(2, '0');
-                                const m = String(currentTime.getMinutes()).padStart(2, '0');
-                                const s = String(currentTime.getSeconds()).padStart(2, '0');
-                                const st = String(new Date(startTime));
-                                const nt = String(new Date(Date.now()));
-                                const pt = String(new Date(stopTime));
-                                
+                                    function displayTime() {
+                                        const currentTime = new Date(Date.now() - startTime + stopTime);
+                                        const h = String(currentTime.getHours()-9).padStart(2, '0');
+                                        const m = String(currentTime.getMinutes()).padStart(2, '0');
+                                        const s = String(currentTime.getSeconds()).padStart(2, '0');
+                                        const st = String(new Date(startTime));
+                                        const nt = String(new Date(Date.now()));
+                                        const pt = String(new Date(stopTime));
+                                        
 
-                                time.textContent = `${h}:${m}:${s}`;
-                                timeoutID = setTimeout(displayTime, 10);
-                            }
+                                        time.textContent = `${h}:${m}:${s}`;
+                                        timeoutID = setTimeout(displayTime, 10);
+                                    }
 
-                            startButton.addEventListener('click', () => {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                                    startButton.addEventListener('click', () => {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                                fetch(`/users/${userId}/timers/start`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    const { id } = data;
-                                    timerId = id;
+                                        fetch(`/users/${userId}/timers/start`, {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }
+                                        })
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                            const { id } = data;
+                                            timerId = id;
 
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    startTime = Date.now();
-                                    displayTime();
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            startTime = Date.now();
+                                            displayTime();
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
 
-                            pauseButton.addEventListener('click', function() {
-                                if(isPause) {
-                                    isPause = false;
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = false;
-                                    resetButton.disabled = false;
-                                    pauseButton.value = "再開";
-                                    clearTimeout(timeoutID);
-                                    stopTime += (Date.now() - startTime);
-                                }else {
-                                    isPause = true;
-                                    startButton.disabled = true;
-                                    pauseButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    pauseButton.value = "一時停止";
-                                    startTime = Date.now();
-                                    displayTime();
-                                }
-                                
+                                    pauseButton.addEventListener('click', function() {
+                                        if(isPause) {
+                                            isPause = false;
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = false;
+                                            resetButton.disabled = false;
+                                            pauseButton.value = "再開";
+                                            clearTimeout(timeoutID);
+                                            stopTime += (Date.now() - startTime);
+                                        }else {
+                                            isPause = true;
+                                            startButton.disabled = true;
+                                            pauseButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            pauseButton.value = "一時停止";
+                                            startTime = Date.now();
+                                            displayTime();
+                                        }
+                                        
 
-                            });
+                                    });
 
-                            stopButton.addEventListener('click', function() {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-                                const inputData = {
-                                duration: stopTime
-                                };
+                                    stopButton.addEventListener('click', function() {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                                        const inputData = {
+                                        duration: stopTime
+                                        };
 
-                                fetch(`/users/${userId}/timers/${timerId}/stop`, {
-                                method: 'PATCH',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }, 
-                                body: JSON.stringify(inputData)
-                                })
-                                .then((response) => response.json())
-                                .then(() => {
-                                    isPause = true;
-                                    startButton.disabled = false;
-                                    pauseButton.disabled = true;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    time.textContent = '00:00:00';
-                                    stopTime = 0;
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
+                                        fetch(`/users/${userId}/timers/${timerId}/stop`, {
+                                        method: 'PATCH',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }, 
+                                        body: JSON.stringify(inputData)
+                                        })
+                                        .then((response) => response.json())
+                                        .then(() => {
+                                            isPause = true;
+                                            startButton.disabled = false;
+                                            pauseButton.disabled = true;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            time.textContent = '00:00:00';
+                                            stopTime = 0;
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
 
-                            resetButton.addEventListener('click', function() {
-                                const userId = document.getElementById('user-id').value;
-                                const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+                                    resetButton.addEventListener('click', function() {
+                                        const userId = document.getElementById('user-id').value;
+                                        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-                                fetch(`/users/${userId}/timers/${timerId}`, {
-                                method: 'DELETE',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-Token': csrfToken
-                                }
-                                })
-                                .then((response) => response.json())
-                                .then((data) => {
-                                    isPause = true;
-                                    startButton.disabled = false;
-                                    stopButton.disabled = true;
-                                    resetButton.disabled = true;
-                                    time.textContent = '00:00:00';
-                                    stopTime = 0;
-                                })
-                                .catch((error) => console.error('Error:', error));
-                            });
+                                        fetch(`/users/${userId}/timers/${timerId}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-Token': csrfToken
+                                        }
+                                        })
+                                        .then((response) => response.json())
+                                        .then((data) => {
+                                            isPause = true;
+                                            startButton.disabled = false;
+                                            stopButton.disabled = true;
+                                            resetButton.disabled = true;
+                                            time.textContent = '00:00:00';
+                                            stopTime = 0;
+                                        })
+                                        .catch((error) => console.error('Error:', error));
+                                    });
 
-                            });
-                        </script>
-                    <% end %>
-                    <!--ここまでストップウォッチ-->
+                                    });
+                                </script>
+                            <% end %>
+                            <!--ここまでストップウォッチ-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
