@@ -1,5 +1,5 @@
 <div class="container mt-5">
-  <h2>Google Books APIからの検索</h2>
+  <h2>Googleから検索</h2>
   <div class="search_form mt-4">
     <%= form_with url: books_path, local: true, method: :get do |f| %>
       <ul style="list-style: none;">
@@ -51,7 +51,7 @@
     </table>
   <% end %>
 
-  <p><%= link_to "自分で本を登録", new_book_path, class: "btn btn-secondary" %></p>
+  <p><%= link_to "本が見つからない場合は...", new_book_path, class: "btn btn-secondary" %></p>
 
   <h2>最近人気な本</h2>
   <table class="table table-hover table-inverse">

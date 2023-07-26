@@ -38,35 +38,39 @@
                     <li class="nav-item search_form mt-1" style="margin-left: 5px">
                       <%= form_with url: user_searches_path(user_id: @user.id), local: true, method: :get, html: { class: "d-flex" } do |f| %>
                           <%= f.text_field :word, placeholder: "ユーザー内検索",  class: "form-control px-4 mt-1" %>
-                          <%= f.select :range, options_for_select([['User'], ['Book']]), {}, class: 'form-control mt-1', style: 'width: 70px;' %>
+                          <%= f.select :range, options_for_select([['ユーザー'], ['本']]), {}, class: 'form-control mt-1', style: 'width: 75px;' %>
                           <%= f.submit "検索", class: " btn btn-primary mt-1" %>
                       <% end %>
                     </li>
                 <% end %>
             <li class="nav-item  mt-1" style="margin-left: 5px">
-                <%= link_to "MyPage", user_path(current_user.id), class: "nav-link btn btn-warning text-white px-2 " %>
+                <%= link_to "マイページ", user_path(current_user.id), class: "nav-link btn btn-warning text-white px-2 " %>
             </li>
             <li class="nav-item mt-1" style="margin-left: 5px">
-              <%= link_to "Bookmarks", likes_path, class: "nav-link btn btn-warning text-white px-2 " %>
+              <%= link_to "お気に入り", likes_path, class: "nav-link btn btn-warning text-white px-2 " %>
             </li>
             <li class="nav-item mt-1" style="margin-left: 5px">
-              <%= link_to "Logout", destroy_user_session_path, method: :delete, class: "nav-link btn btn-warning text-white px-2 " %>
+              <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class: "nav-link btn btn-danger text-white px-2 " %>
             </li>
             <% if current_user.image.attached? %>
               <li class="nav-item d-none d-lg-inline mt-1" style="margin-left: 5px">
-                <%= image_tag current_user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50", style: 'margin-top: -3px;' %>
+                <%= link_to user_path(current_user.id) do %>
+                  <%= image_tag current_user.image, format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle", size: "50x50", style: 'margin-top: -3px;' %>
+                <% end %>
               </li>
             <% else %>
               <li class="nav-item d-none d-lg-inline mt-1" style="margin-left: 5px">
+                <%= link_to user_path(current_user.id) do %>
                 <%= image_tag "no_user_image.jpg", format: "jpeg", fallback: "no_image.jpg", class: "nav-image rounded-circle md-4", size: "50x50", style: 'margin-top: -3px;' %>
+                <% end %>
               </li>
             <% end %>
           <% else %>
             <li class="nav-item mt-1" style="margin-left: 5px">
-              <%= link_to "Login", new_user_session_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
+              <%= link_to "ログイン", new_user_session_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
             </li>
             <li class="nav-item mt-1"  style="margin-left: 5px">
-              <%= link_to "Signup", new_user_registration_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
+              <%= link_to "サインアップ", new_user_registration_path, class: "nav-link btn btn-warning text-white px-4 mt-1" %>
             </li>
           <% end %>
         </ul>
